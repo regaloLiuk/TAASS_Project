@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <style>
+            html, body {
+                height: 100%;
+                padding: 10%;
+                margin: 0;
+            }
+            #map {
+                /* configure the size of the map */
+                width: 80%;
+                height: 80%;
+            }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map"></div>
+    </body>
+</html>
+
+<script>
+    // initialize Leaflet, lon=longitude, lat=latitude, zoom
+    var map = L.map('map').setView({lon: 7.074824, lat: 45.191018}, 13);
+
+    // add the OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    }).addTo(map);
+
+    // show the scale bar on the lower left corner
+    L.control.scale({imperial: true, metric: true}).addTo(map);
+
+    // show a marker on the map
+    L.marker({lon: 7.074824, lat: 45.191018}).bindTooltip('Rifugio Ca d Asti').addTo(map)
+</script>
