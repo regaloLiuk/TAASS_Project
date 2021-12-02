@@ -46,11 +46,11 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return age == user.age &&
-                id.equals(user.id) &&
-                email.equals(user.email) &&
-                password.equals(user.password) &&
-                name.equals(user.name) &&
-                lastName.equals(user.lastName);
+               id.equals(user.id) &&
+               email.equals(user.email) &&
+               password.equals(user.password) &&
+               name.equals(user.name) &&
+               lastName.equals(user.lastName);
     }
 
     @Override
