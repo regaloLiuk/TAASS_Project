@@ -32,14 +32,14 @@
 
             <!--Logo-->
             <div style="text-align: center;">
-                <img src="../img/logo.png" alt="MountBook" style=" height: 20%; width: 20%; margin-top: 1%;">
+                <img src="../img/logo.png" alt="MountBook" style=" height: 22%; width: 22%; margin-top: 1%;">
             </div>
 
             <!-- div login-->
-            <div class="card" id="login-form" style="text-align: center; margin:10px auto; height: 30%; width: 20%; margin-top: 2%; min-width: 200px; min-height: 300px;">
+            <div class="card" id="login-form" style="text-align: center; margin:10px auto; height: 30%; width: 20%; margin-top: 2%; min-width: 350px; max-width: 350px; min-height: 300px;">
 
                 <article class="card-body">
-                    <h4 class="card-title text-center mb-4 mt-1">Accedi a MountBook</h4>
+                    <h4 class="card-title text-center mb-4 mt-1">Accedi</h4>
                     <hr>
                     <form>
                         <!-- Input username-->
@@ -61,11 +61,13 @@
                         <!--bottoni login-->
                         <div style="padding:2%; ">
                             <button type="button" class="btn btn-danger">Accedi</button><br>
-                            <button style="margin-top: 2px" type="button" class="btn btn-danger">Crea account</button><br>
+                            <button style="margin-top: 2px" type="button" class="btn btn-danger">Crea account</button>
                             <!--Bottone login Google-->
-                            <div style="margin-top:10px; " class="g-signin2" data-onsuccess="onSignIn" data-longtitle="true" ></div>
-                            <!--Placeholder facebook login-->
-                            <button style="float:none; " type="button" class="btn btn-primary">Accedi con Facebook</button><br>
+                            <div >
+                                <div style="margin-left:57px; margin-top:25px ;" class="g-signin2" data-onsuccess="onSignIn" data-longtitle="true"></div>
+                                <!--Placeholder facebook login-->
+                                <button type="button" class="btn btn-primary" style="margin-top: 5px; ">Accedi con Facebook</button><br>
+                            </div>
                         </div> 
                     </form>
                 </article>      
