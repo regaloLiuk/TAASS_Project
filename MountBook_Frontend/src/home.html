@@ -22,7 +22,9 @@
         <!--Google login API-->
         <script src="https://apis.google.com/js/platform.js" async defer></script>        
         <meta name="google-signin-client_id" content="595398968389-j7ao3ors9ged5r59lagmcacrbvnhdc6k.apps.googleusercontent.com">
-
+        <!--Open Street Map API-->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
 
     
@@ -31,37 +33,37 @@
 
         <div id="app"><!-- div per utilizzo di Vue.js-->
             <!--NavBar-->
-            <div id="nav" >
-                <a href="home.html" ><img src="../img/logo.png" alt="MountBook" style=" height: 10%; width: 10%; margin-top: 1px; margin-left: 3px;float: left; min-width: 90px;"></a>
-                <a href="home.html" ><img src="https://www.nanopress.it/wp-content/uploads/2018/02/Immagini-profilo-Facebook.jpg" alt="MountBook" style=" height: 10%; width: 10%; margin-top: 1px;margin-left: 3px;float: right; border-radius: 70%; min-width: 90px;"></a>
-            </div>
+          <!--  <div id="na" >
+                <a href="home.html" ><img src="../img/logo.png" alt="MountBook" style=" height: 10%; width: 10%; margin-top: 1px; margin-left: 3px;  float: left; min-width: 90px;"/></a>
+                <a href="home.html" ><img src="https://www.nanopress.it/wp-content/uploads/2018/02/Immagini-profilo-Facebook.jpg" alt="MountBook" style="  height: 10%; width: 10%; margin-top: 1px;margin-left: 3px;float: right; border-radius: 70%; min-width: 90px;"/></a>
+            </div>-->
             <div id="home-div" v-if="seen_home"> <!--Div contenuto home della pagina-->
                 <!--Carousel home page-->
                 <div id="carousel-div" style=" margin: auto; margin-top: 2%;  align-content : center; max-height: 5%; max-width: 30%; min-width: 400px;">
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                         </div>
                         <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="../img/carousel/img1.png" class="d-block w-100" style="max-height: 300px;" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="../img/carousel/img4.jpeg" class="d-block w-100" style="max-height: 300px;" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="../img/carousel/img3.jpeg" class="d-block w-100" style="max-height: 300px;" alt="...">
-                        </div>
+                            <div class="carousel-item active">
+                                <img src="../img/carousel/img1.png" class="d-block w-100" style="max-height: 300px;" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="../img/carousel/img4.jpeg" class="d-block w-100" style="max-height: 300px;" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="../img/carousel/img3.jpeg" class="d-block w-100" style="max-height: 300px;" alt="...">
+                            </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
                         </button>
                         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
                         </button>
                     </div>
                 </div>
@@ -116,16 +118,19 @@
                         
                         </div>
 
-                    
                         <br>
                         <button type="button" class="btn btn-warning" style="margin:auto; margin-top: 5px; " onclick="find()">Cerca</button>
 
                     </form>
                 </div>
 
+
                 <!--Div lista rifugi-->
                 <div style="margin:auto;  max-width: 90%; margin-top: 30px; padding-left:13%">
                     
+                    <h3 v-if="length"><strong><U>Risultati: {{length}} </U></strong></h3>
+
+
                     <div v-for="(index, i) in jsn_list_dummy" class="card-deck" style="display: inline-block; margin:5px;">
                         <div class="card" style="max-width: 300px; min-width: 300px;">
                             <a href='#' ><img class="card-img-top" :src='jsn_list_dummy[i].img' alt="Card image cap" style="max-height: 175px;" @click="toDetail(i)"></a>
@@ -141,32 +146,89 @@
                 </div>
             </div>
             <!--DIV Dettaglio rifugio-->
-            <div id="detail-div" v-if="seen_detail">
-                <div>
-                    <img :src='img_src_detail' class="rounded mx-auto d-block" :alt='jsn_list_dummy[element].name'>
-                </div>
-            </div>
+            <div id="detail-div" v-if="seen_detail" style="text-align : center;">
 
+                <h1 style="margin: auto; margin-top:4%"><strong>{{jsn_list_dummy[app.element].name}}</strong></h1>
+
+
+                <div id="carousel-detail-div" style=" margin: auto; margin-top: 2%;  align-content : center; max-height: 5%; max-width: 30%; min-width: 400px;">
+                    <div id="carouselExampleIndicatorsDetail" class="carousel slide" data-bs-ride="carousel">
+
+                        <div class="carousel-indicators"><!--Render bottoni carousel dettaglio-->
+
+                            <template v-for="(index, i) in jsn_list_dummy[app.element].images" v-if="i==0">
+                                <button type="button" data-bs-target="#carouselExampleIndicatorsDetail" :data-bs-slide-to="i" class="active" aria-current="true" aria-label="Slide i"></button>
+                            </template>
+                            <template v-else>
+                                <button type="button" data-bs-target="#carouselExampleIndicatorsDetail" :data-bs-slide-to="i" aria-label="Slide i"></button>
+                            </template>
+
+                        </div>
+                        <div class="carousel-inner"><!--Render immagini carousel dettaglio-->
+                            <template v-for="(index, i) in jsn_list_dummy[app.element].images" v-if="i==0">
+                                <div class="carousel-item active">
+                                    <img :src='jsn_list_dummy[app.element].images[i]' class="d-block w-100" style="max-height: 300px;" alt="...">
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="carousel-item">
+                                    <img :src='jsn_list_dummy[app.element].images[i]' class="d-block w-100" style="max-height: 300px;" alt="...">
+                                </div>
+                            </template>
+                        </div>
+                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicatorsDetail" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                             <span class="visually-hidden">Previous</span>
+                         </button>
+                         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicatorsDetail" data-bs-slide="next">
+                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                             <span class="visually-hidden">Next</span>
+                          </button>
+                    </div>
+                </div>
+
+                <div id="detail-content" style="text-align: left; width:70%; margin:auto; margin-top: 3% ; "> <!--Contenuto pagina dettagli-->
+
+                    <h2><strong><U>Descrizione</U></strong></h2>
+                    <div style=" border: 1px outset black; background-color:#FFE5CC; margin-top:3px;">
+                        <p>{{jsn_list_dummy[app.element].descrizione}}</p>
+                    </div><br>
+
+                    <h2><strong><U>Servizi</U></strong></h2>
+                    <div style=" border: 1px outset black; background-color:#FFE5CC; margin-top:3px;">
+                        <p>{{jsn_list_dummy[app.element].descrizione}}</p> <!--Descrizione servizi-->
+                    </div><br>
+
+                    <h2><strong><U>Come raggiungerci</U></strong></h2>
+                    <div style=" border: 1px outset black; background-color:#FFE5CC; margin-top:3px;">
+                        <p>{{jsn_list_dummy[app.element].descrizione}}</p><!--Descrizione come raggiungerci-->
+                    </div><br>
+                    
+                    <div id="map" style="width: 50%; min-width: 300px ; height: 300px; margin:auto "></div>
+                </div><br>
+                
+                <button type="button" class="btn btn-danger" style="margin:auto;" @click="toHome()">Verifica disponibilita'</button><br><br>
+                
+            </div>
+            
         </div>
-       
+        
     </body>
     
     <script>
         $(document).ready(function(){
             //Azioni da eseguire al caricamento della pagina
+            
         });
 
         function find(){
-            app.jsn_list_dummy = JSON.parse("[{\"img\":\"https://www.montagnaestate.it/wp-content/uploads/lago-konigssee-baviera-germania-paesaggio-in-estate.jpg\",\"name\": \"Selleries\", \"id\": 1,\"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\", \"prezzo\": \"56\"},{\"id\": 2,\"name\": \"Jervis\", \"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\"prezzo\": \"12\",\"img\":\"https://www.montagnaestate.it/wp-content/uploads/baita-di-montagna-in-val-gardena.jpg\"},{\"id\": 3,\"name\": \"Barbara\", \"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\"prezzo\": \"34\",\"img\":\"https://www.montagnaestate.it/wp-content/uploads/casa-nel-bosco.jpg\"},{\"img\":\"https://www.montagnaestate.it/wp-content/uploads/lago-konigssee-baviera-germania-paesaggio-in-estate.jpg\",\"name\": \"Selleries\", \"id\": 1,\"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\", \"prezzo\": \"24\"},{\"id\": 2,\"name\": \"Jervis\", \"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\"prezzo\": \"23\",\"img\":\"https://www.montagnaestate.it/wp-content/uploads/baita-di-montagna-in-val-gardena.jpg\"},{\"id\": 3,\"name\": \"Barbara\", \"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\"prezzo\": \"52\",\"img\":\"https://www.montagnaestate.it/wp-content/uploads/casa-nel-bosco.jpg\"}]")
+            app.jsn_list_dummy = JSON.parse("[{\"onmap\":[\"7.074824\",\"45.191018\"],\"images\":[\"https://www.montagnaestate.it/wp-content/uploads/lago-konigssee-baviera-germania-paesaggio-in-estate.jpg\",\"https://www.montagnaestate.it/wp-content/uploads/baita-di-montagna-in-val-gardena.jpg\"], \"img\":\"https://www.montagnaestate.it/wp-content/uploads/lago-konigssee-baviera-germania-paesaggio-in-estate.jpg\",\"name\": \"Selleries\", \"id\": 1,\"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\", \"prezzo\": \"56\"},{\"id\": 2,\"name\": \"Jervis\", \"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\"prezzo\": \"12\",\"img\":\"https://www.montagnaestate.it/wp-content/uploads/baita-di-montagna-in-val-gardena.jpg\"},{\"id\": 3,\"name\": \"Barbara\", \"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\"prezzo\": \"34\",\"img\":\"https://www.montagnaestate.it/wp-content/uploads/casa-nel-bosco.jpg\"},{\"img\":\"https://www.montagnaestate.it/wp-content/uploads/lago-konigssee-baviera-germania-paesaggio-in-estate.jpg\",\"name\": \"Selleries\", \"id\": 1,\"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\", \"prezzo\": \"24\"},{\"id\": 2,\"name\": \"Jervis\", \"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\"prezzo\": \"23\",\"img\":\"https://www.montagnaestate.it/wp-content/uploads/baita-di-montagna-in-val-gardena.jpg\"},{\"id\": 3,\"name\": \"Barbara\", \"descrizione\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\"prezzo\": \"52\",\"img\":\"https://www.montagnaestate.it/wp-content/uploads/casa-nel-bosco.jpg\"}]")
+            app.length=0;
+            for(var k in app.jsn_list_dummy) app.length++; // Calcolo quanti elementi sono ritornati come risultato per visualizzarlo nella pagina
         }
 
-        function toDetail(i){// Passaggio da Home a Dettaglio
-            
-            app.seen_detail=true; // Rende visibile la porzione di pagina relativa al dettaglio
-            app.seen_home=false; // Nasconde la porzione di pagina relativa alla home
-            app.img_src_detail=app.jsn_list_dummy[parseInt(i)].img; //Setta l'immagine da visualizzare nel dettaglio
-            app.element=parseInt(i); //Mantiene informazione sull'elemento scelto mantenendo la posizione nel json
-        }
+
+        
 
         function up(){
             $.ajax({
@@ -193,10 +255,57 @@
                 seen_home:true,
                 img_src_detail:'',
                 element:-1,
+                length: null,
 
                 jsn_list_dummy: null,
 
                 },
+            methods: {
+                
+                toDetail: function(index){// Passaggio da Home a Dettaglio
+
+                    app.seen_detail=true; // Rende visibile la porzione di pagina relativa al dettaglio
+                    app.seen_home=false; // Nasconde la porzione di pagina relativa alla home
+                    app.img_src_detail=app.jsn_list_dummy[parseInt(index)].img; //Setta l'immagine da visualizzare nel dettaglio
+                    app.element=parseInt(index); //Mantiene informazione sull'elemento scelto mantenendo la posizione nel json
+                    this.$nextTick(function () {app.addOpenStreetMap(app.element); }); // Richiamo l'aggiornamento della mappa in questo modo perchè è necessario attendere il rendere della porzione di pagina nuova per poter utilizzare il div 'map'
+
+                },
+                toHome: function(index){// Passaggio da Dettaglio a Home
+
+                    app.seen_detail=false; // Nasconde la porzione di pagina relativa al dettaglio
+                    app.seen_home=true; // Rende visibile la porzione di pagina relativa alla home
+                },
+
+                addOpenStreetMap: function(index){ // Aggiornamento mappa con API OpenStreetMap
+                    // initialize Leaflet, lon=longitude, lat=latitude, zoom
+                    var lon = parseFloat(app.jsn_list_dummy[index].onmap[0]);
+                    var lat = parseFloat(app.jsn_list_dummy[index].onmap[1]);
+                    var name = app.jsn_list_dummy[index].name;
+
+                    var map = L.map('map').setView({lon: lon, lat: lat}, 13);
+
+                    console.log(lon+" "+lat+" "+" "+name);
+
+                    // add the OpenStreetMap tiles
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+                    }).addTo(map);
+
+                    // show the scale bar on the lower left corner
+                    L.control.scale({imperial: true, metric: true}).addTo(map);
+
+                    // show a marker on the map
+                    L.marker({lon: lon, lat: lat}).bindTooltip(name).addTo(map);
+                },
+
+                
+                    
+
+
+
+            }
         })
     </script>
 </html>
