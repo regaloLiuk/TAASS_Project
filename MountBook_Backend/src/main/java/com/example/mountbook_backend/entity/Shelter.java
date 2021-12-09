@@ -19,7 +19,10 @@ public class Shelter {
     private String email;
     @OneToMany(mappedBy = "shelter", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Room> rooms;
-//  private String email;
+    @OneToMany(mappedBy = "shelter", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Service> services;
+    @OneToMany(mappedBy = "shelter", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Outing> outings;
 
 
     public Shelter() {    }
