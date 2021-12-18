@@ -5,12 +5,12 @@ import javax.persistence.*;
 @Entity
 public class Room {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
     private int beds;
     private float price;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinTable(name = "shelterRooms")
     private Shelter shelter;
 
     public Room() {}

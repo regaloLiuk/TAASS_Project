@@ -1,14 +1,13 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long id;
     private int age;
     @Column(unique = true, nullable = false)
@@ -16,6 +15,8 @@ public class User {
     private String password;
     private String name;
     private String lastName;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reservation> reservations;
 
     public User() {}
 

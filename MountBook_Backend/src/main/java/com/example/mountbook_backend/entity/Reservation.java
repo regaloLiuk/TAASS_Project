@@ -9,13 +9,18 @@ import java.util.Objects;
 public class Reservation {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_reservation",
+            joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id", nullable = true),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true))
     private User user;
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    private Shelter shelter;
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Service> services;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "reserved_room",
+            joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id", nullable = true),
+            inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id", nullable = true))
+    private List<Room> roomsReserved;
     private int guests;
     private Date start;
     private Date end;
@@ -23,14 +28,6 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(User user, Shelter shelter, List<Service> services, int guests, Date start, Date end) {
-        this.user = user;
-        this.shelter = shelter;
-        this.services = services;
-        this.guests = guests;
-        this.start = start;
-        this.end = end;
-    }
 
     public Long getId() {
         return id;
@@ -42,22 +39,6 @@ public class Reservation {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Shelter getShelter() {
-        return shelter;
-    }
-
-    public void setShelter(Shelter shelter) {
-        this.shelter = shelter;
-    }
-
-    public List<Service> getServices() {
-        return services;
-    }
-
-    public void setServices(List<Service> services) {
-        this.services = services;
     }
 
     public int getGuests() {
@@ -82,18 +63,5 @@ public class Reservation {
 
     public void setEnd(Date end) {
         this.end = end;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Reservation that = (Reservation) o;
-        return guests == that.guests && id.equals(that.id) && user.equals(that.user) && shelter.equals(that.shelter) && Objects.equals(services, that.services) && Objects.equals(start, that.start) && Objects.equals(end, that.end);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, shelter, services, guests, start, end);
     }
 }

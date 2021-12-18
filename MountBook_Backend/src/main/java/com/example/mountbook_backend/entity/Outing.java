@@ -5,11 +5,14 @@ import javax.persistence.*;
 @Entity
 public class Outing {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinTable(name = "shelterOutings")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "shelter_outing",
+            joinColumns = @JoinColumn(name = "outing_id", referencedColumnName = "id", nullable = true),
+            inverseJoinColumns = @JoinColumn(name = "shelter_id", referencedColumnName = "id", nullable = true))
     private Shelter shelter;
 
     public Outing() {

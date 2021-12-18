@@ -6,11 +6,14 @@ import java.util.Objects;
 @Entity
 public class Service {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private float price;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinTable(name = "shelterServices")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "shelter_services",
+            joinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = true),
+            inverseJoinColumns = @JoinColumn(name = "shelter_id", referencedColumnName = "id", nullable = true))
     private Shelter shelter;
 
     public Service() {}
