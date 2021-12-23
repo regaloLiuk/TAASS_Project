@@ -22,8 +22,8 @@ public class Shelter {
     private List<Room> rooms;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Service> services;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Outing> outings;
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Outing> outings;
 
 
     public Shelter() {    }

@@ -1,61 +1,92 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
+@Table(name = "users",uniqueConstraints = {@UniqueConstraint(columnNames = "username"),@UniqueConstraint(columnNames = "email")})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int age;
-    @Column(unique = true, nullable = false)
+
+    @NotBlank
+    @Size(max = 20)
+    private String username;
+
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
+
+    @NotBlank
+    @Size(max = 120)
     private String password;
-    private String name;
-    private String lastName;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Reservation> reservations;
 
-    public User() {}
+    private String token;
 
-    public User(int age, String email, String password, String name, String lastName) {
-        this.age = age;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    public User() {
+    }
+
+    public User(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
-        this.name = name;
-        this.lastName = lastName;
     }
 
-    public Long getId() {return id;}
-    public int getAge() {return age;}
-    public String getEmail() {return email;}
-    public String getPassword() {return password;}
-    public String getName() {return name;}
-    public String getLastName() {return lastName;}
-
-    public void setAge(int age) {this.age = age;}
-    public void setEmail(String email) {this.email = email;}
-    public void setPassword(String password) {this.password = password;}
-    public void setName(String name) {this.name = name;}
-    public void setLastName(String lastName) {this.lastName = lastName;}
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return age == user.age &&
-               id.equals(user.id) &&
-               email.equals(user.email) &&
-               password.equals(user.password) &&
-               name.equals(user.name) &&
-               lastName.equals(user.lastName);
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, age, email, password, name, lastName);
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getToken() {return token;}
+
+    public void setToken(String token) {this.token = token;}
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
