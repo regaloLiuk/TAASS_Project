@@ -1,56 +1,85 @@
 package com.example.mountbook_backend.controller;
 
+import com.example.mountbook_backend.entity.ERole;
+import com.example.mountbook_backend.entity.Role;
 import com.example.mountbook_backend.entity.User;
-import com.example.mountbook_backend.payload.responce.MessageResponse;
+import com.example.mountbook_backend.payload.request.SignupRequest;
+import com.example.mountbook_backend.repository.RoleRepository;
 import com.example.mountbook_backend.repository.UserRepository;
-import com.example.mountbook_backend.security.jwt.JwtUtils;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController{
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private RoleRepository roleRepository;
 
-    @Autowired
-    JwtUtils jwtUtils;
+    @PostMapping("/signup")
+    public ResponseEntity registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername()))
+            return new ResponseEntity("Error: Username is already taken!", HttpStatus.BAD_REQUEST);
+        if (userRepository.existsByEmail(signUpRequest.getEmail()))
+            return new ResponseEntity("Error: Email is already in use!", HttpStatus.BAD_REQUEST);
 
-    @GetMapping("/getUsers")
-    public ResponseEntity<?> getUsers(){
-        return ResponseEntity.ok(new MessageResponse("Users: " + userRepository.findAll()));}
+        // Create new user's account
+        User user = new User(signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                signUpRequest.getPassword());
 
-    @GetMapping("/getUserById")
-    public Optional<User> getUserById(Long id){return userRepository.findById(id);}
+        Set<String> strRoles = signUpRequest.getRole();
+        Set<Role> roles = new HashSet<>();
 
-    @GetMapping("/getUserByEmail")
-    public Optional<User> getUserByEmail(String email){return userRepository.findByEmail(email);}
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(adminRole);
+                        break;
+
+                    case "moderator":
+                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(modRole);
+                        break;
+                    case "host":
+                        Role hostRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(hostRole);
+                        break;
+
+                    default:
+                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
+        }
+
+        user.setRoles(roles);
+        userRepository.save(user);
+
+        return new ResponseEntity("User registered successfully!",HttpStatus.OK);
+    }
 
     @PostMapping("/changePaqssword")
     public ResponseEntity<String> changePassword(@RequestParam String mail, @RequestParam String oldPassword, @RequestParam String newPassword){
-        Optional<User> user = getUserByEmail(mail);
+        Optional<User> user = userRepository.findByEmail(mail);
         if (!user.isPresent())
             return new ResponseEntity<String>("no user found for this email", HttpStatus.NOT_FOUND);
         if (user.get().getPassword().equals(oldPassword))
@@ -61,37 +90,4 @@ public class UserController{
         userRepository.updatePassword(mail,newPassword);
         return new ResponseEntity<String>("password changed successfully", HttpStatus.OK);
     }
-
-    @PostMapping("user")
-    public User login(@RequestParam("user") String username, @RequestParam("password") String pwd) {
-
-        String token = getJWTToken(username);
-        User user = new User();
-        user.setUsername(username);
-        user.setToken(token);
-        return user;
-
-    }
-
-    private String getJWTToken(String username) {
-        String secretKey = "mySecretKey";
-        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList("ROLE_USER");
-
-        String token = Jwts
-                .builder()
-                .setId("softtekJWT")
-                .setSubject(username)
-                .claim("authorities",
-                        grantedAuthorities.stream()
-                                .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.toList()))
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
-                .signWith(SignatureAlgorithm.HS512,
-                        secretKey.getBytes()).compact();
-
-        return "Bearer " + token;
-    }
-
 }
