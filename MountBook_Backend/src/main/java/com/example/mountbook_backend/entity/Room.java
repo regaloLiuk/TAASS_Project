@@ -1,7 +1,6 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Room {
@@ -22,12 +21,6 @@ public class Room {
         this.price = price;
     }
 
-
-    /*
-    * {"description":"room 101",
-    *  "bed" : 2,
-    *  "price" : 22.4}
-    * */
 
     public Long getId() {
         return id;

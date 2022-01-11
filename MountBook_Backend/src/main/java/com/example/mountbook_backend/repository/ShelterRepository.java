@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +20,8 @@ public interface ShelterRepository extends JpaRepository<Shelter,Long> {
                    " SELECT rr.room_id FROM reserved_rooms rr JOIN reservation res ON (rr.reservation_id = res.id) WHERE res.first_day=:date_start AND res.last_day=:date_end)", nativeQuery = true)
     List<Long> findSheltersIdByDate(@Param("date_start") Date dateStart, @Param("date_end") Date dateEnd);
 
-    @Query(value = "SELECT ss.shelter_id FROM shelter_services ss WHERE ss.serveice_id=:service1", nativeQuery = true)
-    List<Long> findShelterIdByServece(@Param("service") Long service);
+//    @Query(value = "SELECT ss.shelter_id FROM shelter_services ss WHERE (:wifi IS NULL OR wifi)", nativeQuery = true)
+//    List<Long> findShelterIdByServece(@Param("wifi") boolean wifi, @Param("equipment") boolean equipment, @Param("car") boolean car);
 
 //    @Query(value = "SELECT ss.shelter_id FROM shelter_services ss WHERE ss.serveice_id=:service1 AND ss.serveice_id=:service2", nativeQuery = true)
 //    List<Long> findShelterIdByServece(@Param("service1") Long service1, @Param("service2") Long service2);

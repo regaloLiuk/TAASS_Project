@@ -1,7 +1,6 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Comment {

@@ -1,7 +1,5 @@
 package com.example.mountbook_backend.payload.request;
 
-import com.example.mountbook_backend.entity.Room;
-import com.example.mountbook_backend.entity.User;
 import com.sun.istack.NotNull;
 
 import javax.validation.constraints.NotBlank;

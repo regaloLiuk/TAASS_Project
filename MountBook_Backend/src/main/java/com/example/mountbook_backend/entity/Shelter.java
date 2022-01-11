@@ -1,10 +1,7 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 public class Shelter {
@@ -16,6 +13,8 @@ public class Shelter {
     private Date open;
     private Date close;
     private float altitude;
+    private float longitude;
+    private float latitude;
     private Long telephoneNumber;
     private String webSite;
     private String email;
@@ -54,6 +53,14 @@ public class Shelter {
 
     public void setAltitude(float altitude) {this.altitude = altitude;}
 
+    public float getLongitude() {return longitude;}
+
+    public void setLongitude(float longitude) {this.longitude = longitude;}
+
+    public float getLatitude() {return latitude;}
+
+    public void setLatitude(float latitude) {this.latitude = latitude;}
+   
     public Long getTelephoneNumber() {return telephoneNumber;}
 
     public void setTelephoneNumber(Long telephoneNumber) {this.telephoneNumber = telephoneNumber;}

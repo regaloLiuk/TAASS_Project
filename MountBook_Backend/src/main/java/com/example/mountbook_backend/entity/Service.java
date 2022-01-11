@@ -1,7 +1,6 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 public class Service {
@@ -10,9 +9,11 @@ public class Service {
     private Long id;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Shelter shelter;
-
+    @Column(columnDefinition = "DEFAULT = false")
     private boolean wifi;
+    @Column(columnDefinition = "DEFAULT = false")
     private boolean equipment;
+    @Column(columnDefinition = "DEFAULT = false")
     private boolean car;
 
     public Service() {}

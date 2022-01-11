@@ -1,9 +1,11 @@
 package com.example.mountbook_backend.controller;
 
-import com.example.mountbook_backend.entity.Room;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.example.mountbook_backend.entity.Shelter;
-import com.example.mountbook_backend.payload.request.LoginRequest;
-import com.example.mountbook_backend.payload.request.ShelterRequest;
 import com.example.mountbook_backend.repository.RoomRepository;
 import com.example.mountbook_backend.repository.ShelterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +22,24 @@ public class ShelterController {
     @Autowired
     RoomRepository roomRepository;
 
-    @GetMapping("/findForDate")
-    public ResponseEntity getFreeShelter(){
-        return null;
+    @GetMapping("/findByDate")
+    public ResponseEntity getFreeShelter(@RequestParam Date dateStart, @RequestParam Date dateEnd){
+        
+        List<Shelter> shelters = new ArrayList<Shelter>();
+        
+        List<Long> ids = shelterRepository.findSheltersIdByDate(dateStart, dateEnd);
+        if(ids.isEmpty())
+            return new ResponseEntity<>("no shelter found for this date", HttpStatus.BAD_REQUEST);
+        
+        for(Long id : ids){
+            Optional<Shelter> shelter = shelterRepository.findById(id);
+            if(shelter.isEmpty())
+                return new ResponseEntity<>("error this id is invalid", HttpStatus.BAD_GATEWAY);
+            shelters.add(shelter.get());
+        }
+
+        return new ResponseEntity<>(shelters, HttpStatus.OK);
+        
     }
 
 }
