@@ -39,7 +39,6 @@ public class CommentController {
 
         Comment comment = new Comment(user.get(), shelter.get());
 
-
         if (commentRequest.isClear() || !comment.isClear())
             comment.setClear(commentRequest.isClear());
 

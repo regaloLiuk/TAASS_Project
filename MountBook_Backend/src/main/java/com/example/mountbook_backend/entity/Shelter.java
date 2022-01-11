@@ -19,6 +19,7 @@ public class Shelter {
     private Long telephoneNumber;
     private String webSite;
     private String email;
+    private String description;
     private String image;   //link immagine, base64, da decidere
 
 
@@ -65,4 +66,19 @@ public class Shelter {
 
     public void setEmail(String email) {this.email = email;}
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

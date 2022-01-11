@@ -20,7 +20,9 @@ public class ShelterController {
     @Autowired
     RoomRepository roomRepository;
 
-
-
+    @GetMapping("/findForDate")
+    public ResponseEntity getFreeShelter(){
+        return null;
+    }
 
 }

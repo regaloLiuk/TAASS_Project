@@ -22,6 +22,14 @@ public interface ShelterRepository extends JpaRepository<Shelter,Long> {
                    " SELECT rr.room_id FROM reserved_rooms rr JOIN reservation res ON (rr.reservation_id = res.id) WHERE res.first_day=:date_start AND res.last_day=:date_end)", nativeQuery = true)
     List<Long> findSheltersIdByDate(@Param("date_start") Date dateStart, @Param("date_end") Date dateEnd);
 
-    @Query(value = "SELECT ss.shelter_id FROM shelter_services ss JOIN service s ON (ss.service_id = s.id) WHERE s.id=:serive1", nativeQuery = true)
-    List<Long> findShelterIdByServece(@Param("service1") Long service1);
+    @Query(value = "SELECT ss.shelter_id FROM shelter_services ss WHERE ss.serveice_id=:service1", nativeQuery = true)
+    List<Long> findShelterIdByServece(@Param("service") Long service);
+
+//    @Query(value = "SELECT ss.shelter_id FROM shelter_services ss WHERE ss.serveice_id=:service1 AND ss.serveice_id=:service2", nativeQuery = true)
+//    List<Long> findShelterIdByServece(@Param("service1") Long service1, @Param("service2") Long service2);
+//
+//    @Query(value = "SELECT ss.shelter_id FROM shelter_services ss WHERE ss.serveice_id=:service1 AND ss.serveice_id=:service2", nativeQuery = true)
+//    List<Long> findShelterIdByServece(@Param("service1") Long service1, @Param("service2") Long service2,
+//                                      @Param("service3") Long service3);
+
 }
