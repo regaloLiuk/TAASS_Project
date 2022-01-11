@@ -3,6 +3,7 @@ package com.example.mountbook_backend.controller;
 import com.example.mountbook_backend.entity.ERole;
 import com.example.mountbook_backend.entity.Role;
 import com.example.mountbook_backend.entity.User;
+import com.example.mountbook_backend.payload.request.LoginRequest;
 import com.example.mountbook_backend.payload.request.SignupRequest;
 import com.example.mountbook_backend.repository.RoleRepository;
 import com.example.mountbook_backend.repository.UserRepository;
@@ -43,7 +44,7 @@ public class UserController{
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
-        } else {
+        }else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
@@ -51,18 +52,16 @@ public class UserController{
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
                         break;
-
                     case "moderator":
                         Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
                         break;
                     case "host":
-                        Role hostRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                        Role hostRole = roleRepository.findByName(ERole.ROLE_HOST)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(hostRole);
                         break;
-
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -70,22 +69,31 @@ public class UserController{
                 }
             });
         }
-
         user.setRoles(roles);
         userRepository.save(user);
-
         return new ResponseEntity("User registered successfully!",HttpStatus.OK);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity changePassword(@RequestBody LoginRequest loginRequest) {
+        Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
+        if (user.isEmpty())
+            return new ResponseEntity("username or password are incorrect", HttpStatus.BAD_REQUEST);
+        if (!user.get().getPassword().equals(loginRequest.getPassword()))
+            return new ResponseEntity("username or password are incorrect", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("Welcome " + user.get().getUsername() + "your", HttpStatus.OK);
+    }
+
+
     @PostMapping("/changePaqssword")
-    public ResponseEntity<String> changePassword(@RequestParam String mail, @RequestParam String oldPassword, @RequestParam String newPassword){
+    public ResponseEntity changePassword(@RequestParam String mail, @RequestParam String oldPassword, @RequestParam String newPassword){
         Optional<User> user = userRepository.findByEmail(mail);
         if (!user.isPresent())
-            return new ResponseEntity<String>("no user found for this email", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("no user found for this email", HttpStatus.NOT_FOUND);
         if (user.get().getPassword().equals(oldPassword))
-            return new ResponseEntity<String>("the password privided is incorrect", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("the password privided is incorrect", HttpStatus.BAD_REQUEST);
         if (oldPassword.equals(newPassword))
-            return new ResponseEntity<String>("the new password must be different from the old one", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("the new password must be different from the old one", HttpStatus.BAD_REQUEST);
 
         userRepository.updatePassword(mail,newPassword);
         return new ResponseEntity<String>("password changed successfully", HttpStatus.OK);

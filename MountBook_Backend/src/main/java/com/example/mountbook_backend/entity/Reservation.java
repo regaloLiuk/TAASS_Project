@@ -9,28 +9,28 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "user_reservations",
-            joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id", nullable = true),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true))
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User user;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "reserved_rooms",
             joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id", nullable = true),
             inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id", nullable = true))
     private List<Room> reservedRooms;
+
     private int guests;
     private Date firstDay;
-    private Date lasttDay;
+    private Date lastDay;
 
     public Reservation() {}
 
-    public Reservation(User user, List<Room> reservedRooms, int guests, Date firstDay, Date lasttDay) {
+    public Reservation(User user, List<Room> reservedRooms, int guests, Date firstDay, Date lastDay) {
         this.user = user;
         this.reservedRooms = reservedRooms;
         this.guests = guests;
         this.firstDay = firstDay;
-        this.lasttDay = lasttDay;
+        this.lastDay = lastDay;
     }
 
     public Long getId() {
@@ -70,10 +70,10 @@ public class Reservation {
     }
 
     public Date getLasttDay() {
-        return lasttDay;
+        return lastDay;
     }
 
     public void setLasttDay(Date lasttDay) {
-        this.lasttDay = lasttDay;
+        this.lastDay = lasttDay;
     }
 }

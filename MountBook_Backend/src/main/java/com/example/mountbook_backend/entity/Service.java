@@ -10,6 +10,7 @@ public class Service {
     private Long id;
     private String name;
     private float price;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "shelter_services",
             joinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = true),

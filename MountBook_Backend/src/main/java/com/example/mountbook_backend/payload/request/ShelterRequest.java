@@ -1,37 +1,23 @@
-package com.example.mountbook_backend.entity;
+package com.example.mountbook_backend.payload.request;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import com.example.mountbook_backend.entity.Outing;
+import com.example.mountbook_backend.entity.Room;
+import com.example.mountbook_backend.entity.Service;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
-@Entity
-public class Shelter {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ShelterRequest {
     private String name;
     private String address;
+    private Long telephoneNumber;
     private Date open;
     private Date close;
     private float altitude;
-    private Long telephoneNumber;
     private String webSite;
     private String email;
-    private String image;   //link immagine, base64, da decidere
-
-
-
-    public Shelter() {}
-
-    public Shelter(String name, String address, Long telephoneNumber) {
-        this.name = name;
-        this.address = address;
-        this.telephoneNumber = telephoneNumber;
-    }
-
-    public Long getId() {return id;}
+    private List<Room> rooms;
+    private List<Service> services;
+    private List<Outing> outings;
 
     public String getName() {return name;}
 
@@ -65,4 +51,15 @@ public class Shelter {
 
     public void setEmail(String email) {this.email = email;}
 
+    public List<Room> getRooms() {return rooms;}
+
+    public void setRooms(List<Room> rooms) {this.rooms = rooms;}
+
+    public List<Service> getServices() {return services;}
+
+    public void setServices(List<Service> services) {this.services = services;}
+
+    public List<Outing> getOutings() {return outings;}
+
+    public void setOutings(List<Outing> outings) {this.outings = outings;}
 }
