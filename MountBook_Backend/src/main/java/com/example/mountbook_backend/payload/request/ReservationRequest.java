@@ -8,15 +8,10 @@ import java.util.Date;
 import java.util.List;
 
 public class ReservationRequest {
-    @NotNull
     private Long user;
-    @NotEmpty
     private List<Long> reservedRooms;
-    @NotBlank
     private int guests;
-    @NotBlank
     private Date firstDay;
-    @NotBlank
     private Date lastDay;
 
     public Long getUser() {

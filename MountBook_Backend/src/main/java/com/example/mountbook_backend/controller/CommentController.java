@@ -1,10 +1,9 @@
 package com.example.mountbook_backend.controller;
 
-import com.example.mountbook_backend.entity.Comment;
-import com.example.mountbook_backend.entity.Shelter;
-import com.example.mountbook_backend.entity.User;
+import com.example.mountbook_backend.entity.*;
 import com.example.mountbook_backend.payload.request.CommentRequest;
 import com.example.mountbook_backend.repository.CommentRepository;
+import com.example.mountbook_backend.repository.ReservationRepository;
 import com.example.mountbook_backend.repository.ShelterRepository;
 import com.example.mountbook_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,15 +27,34 @@ public class CommentController {
     UserRepository userRepository;
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    ReservationRepository reservationRepository;
 
-    @PostMapping("newComment")
+    @PostMapping("/doComment")
     public ResponseEntity doComment(@RequestBody CommentRequest commentRequest){
+
+        //check if the shelter exist
         Optional<Shelter> shelter = shelterRepository.findById(commentRequest.getShelter());
         if (shelter.isEmpty())
             return new ResponseEntity("no shelters found", HttpStatus.BAD_REQUEST);
+
+        //check if the user exist
         Optional<User> user = userRepository.findById(commentRequest.getUser());
         if (user.isEmpty())
             return new ResponseEntity("no users found", HttpStatus.BAD_REQUEST);
+
+        //check if the user have done the journey
+        List<Reservation> userReservation = reservationRepository.findAllByUser(user.get());
+        boolean haveUserDoneJourney = false;
+        for (Reservation r : userReservation){
+            for(Room room : r.getReservedRooms()) {
+                Optional<Shelter> reservedShelter = shelterRepository.findShelterByRoom(room.getId());
+                if (shelter.get().getId() == reservedShelter.get().getId())
+                    haveUserDoneJourney=true;
+            }
+        }
+        if(!haveUserDoneJourney)
+            return new ResponseEntity("user not have done the journey", HttpStatus.BAD_REQUEST);
 
         Comment comment = new Comment(user.get(), shelter.get());
 

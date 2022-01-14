@@ -1,11 +1,16 @@
 package com.example.mountbook_backend.payload.request;
 
+import javax.validation.constraints.NotBlank;
+
 public class CommentRequest {
 
     private Long user;
     private Long shelter;
+    @NotBlank
     private boolean service;
+    @NotBlank
     private boolean clear;
+    @NotBlank
     private boolean ospitality;
 
     public Long getUser() {

@@ -1,6 +1,9 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -8,20 +11,47 @@ public class Shelter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(max = 50)
     private String name;
+
+    @NotBlank
+    @Size(max = 120)
     private String address;
+
+    @Column(columnDefinition = "DATE", nullable = false)
     private Date open;
+
+    @Column(columnDefinition = "DATE", nullable = false)
     private Date close;
+
+    @NotBlank
     private float altitude;
+
+    @NotBlank
     private float longitude;
+
+    @NotBlank
     private float latitude;
+
+    @NotBlank
     private Long telephoneNumber;
+
+    @NotBlank
+    @Size(max = 120)
     private String webSite;
+
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    @Column(unique = true)
     private String email;
+
+    @NotBlank
     private String description;
+
     private String image;   //link immagine, base64, da decidere
-
-
 
     public Shelter() {}
 

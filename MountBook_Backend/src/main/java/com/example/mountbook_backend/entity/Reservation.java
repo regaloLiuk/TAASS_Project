@@ -1,6 +1,7 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -13,14 +14,19 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(name = "reserved_rooms",
             joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id", nullable = true),
             inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id", nullable = true))
     private List<Room> reservedRooms;
 
+    @Column(nullable = false)
     private int guests;
+
+    @Column(columnDefinition = "DATE",nullable = false)
     private Date firstDay;
+
+    @Column(columnDefinition = "DATE",nullable = false)
     private Date lastDay;
 
     public Reservation() {}

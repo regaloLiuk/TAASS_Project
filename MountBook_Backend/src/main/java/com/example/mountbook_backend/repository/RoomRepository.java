@@ -18,4 +18,7 @@ public interface RoomRepository extends JpaRepository<Room,Long>{
                     "FROM Room r1 JOIN Reservation ON (r1.reservation.id = Reservation.id))", nativeQuery = true)
     List<Room> getRoomNotReserved(@Param("shelter_id") Long shelterId);
 
+    @Query(value = "SELECT rs.room_id FROM reserved_rooms rs WHERE rs.reservation_id=:reservation_id", nativeQuery = true)
+    List<Long> getRoomByReservation(@Param("reservation_id") Long reservationId);
+
 }

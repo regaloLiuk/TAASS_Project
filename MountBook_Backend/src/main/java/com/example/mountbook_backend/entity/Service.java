@@ -7,13 +7,17 @@ public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Shelter shelter;
-    @Column(columnDefinition = "DEFAULT = false")
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
     private boolean wifi;
-    @Column(columnDefinition = "DEFAULT = false")
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
     private boolean equipment;
-    @Column(columnDefinition = "DEFAULT = false")
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
     private boolean car;
 
     public Service() {}

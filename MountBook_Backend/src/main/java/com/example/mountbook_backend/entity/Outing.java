@@ -10,11 +10,14 @@ public class Outing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank
     @Size(max = 20)
     private String name;
+
     @NotBlank
     private String description;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "shelter_outings",
             joinColumns = @JoinColumn(name = "outing_id", referencedColumnName = "id", nullable = true),
