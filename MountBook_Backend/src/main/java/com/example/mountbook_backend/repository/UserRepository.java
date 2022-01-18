@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
@@ -18,6 +19,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Boolean existsByEmail(String email);
 
     @Modifying
+    @Transactional
     @Query("UPDATE User u SET u.password=:newPassword WHERE u.email=:email")
     void updatePassword(String email, String newPassword);
 
