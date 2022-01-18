@@ -14,12 +14,14 @@ public interface ShelterRepository extends JpaRepository<Shelter,Long> {
 
     Optional<Shelter> findById(Long shelterId);
 
+    List<Shelter> findAll();
+
     @Query(value = "SELECT s FROM Room r JOIN Shelter s ON (s.id=r.shelter.id) WHERE r.id=:room_id")
     Optional<Shelter> findShelterByRoom(@Param("room_id") Long roomId);
 
     // ritorna l'id di rifugi che non hanno camere nella lista delle prenotazioni per le date selezionate
     //DA PROVARE!!!
-    @Query(value = "SELECT r.shelter_id FROM room r WHERE r.id NOT IN (" +
+    @Query(value = "SELECT DISTINCT (r.shelter_id) FROM room r WHERE r.id NOT IN (" +
                    " SELECT rr.room_id FROM reserved_rooms rr JOIN reservation res ON (rr.reservation_id = res.id) WHERE res.first_day=:date_start AND res.last_day=:date_end)", nativeQuery = true)
     List<Long> findSheltersIdByDate(@Param("date_start") Date dateStart, @Param("date_end") Date dateEnd);
 

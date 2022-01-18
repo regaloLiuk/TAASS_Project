@@ -39,7 +39,13 @@ public class ShelterController {
         return new ResponseEntity<>(shelters, HttpStatus.OK);
     }
 
-    @GetMapping("/findByService")
+    @GetMapping("/findAll")
+    public ResponseEntity getFreeShelter(){
+        return new ResponseEntity(shelterRepository.findAll(), HttpStatus.OK);
+    }
+
+
+        @GetMapping("/findByService")
     public ResponseEntity getSheleterFromService(@RequestParam Boolean wifi, @RequestParam Boolean car,
                                                  @RequestParam Boolean equipment){
         List<Shelter> shelters = shelterRepository.findShelterIdByServece(wifi,equipment,car);
