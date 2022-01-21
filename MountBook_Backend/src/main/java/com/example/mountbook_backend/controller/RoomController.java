@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,12 +22,6 @@ public class RoomController {
     ShelterRepository shelterRepository;
 
 
-    @GetMapping("freeRoom")
-    public ResponseEntity getFreeRoom(@RequestParam Long shelterId){
-        List<Room> roomList = roomRepository.getRoomNotReserved(shelterId);
-        if (roomList.isEmpty())
-            return new ResponseEntity("no room are left in this shelter", HttpStatus.NOT_FOUND);
-        return new ResponseEntity("rooms: " + roomList, HttpStatus.OK);
-    }
+//     }
 
 }

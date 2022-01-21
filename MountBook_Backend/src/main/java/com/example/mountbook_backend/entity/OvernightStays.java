@@ -1,10 +1,8 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.Entity;
-
-import java.sql.Date;
-
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class OvernightStays {

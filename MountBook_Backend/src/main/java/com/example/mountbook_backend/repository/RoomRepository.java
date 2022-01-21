@@ -11,12 +11,12 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends JpaRepository<Room,Long>{
 
-    @Query(value =  "SELECT * " +
-                    "FROM Room r " +
-                    "WHERE r.shelter.id=:shelter_id AND r.id NOT IN (" +
-                    "SELECT * " +
-                    "FROM Room r1 JOIN Reservation ON (r1.reservation.id = Reservation.id))", nativeQuery = true)
-    List<Room> getRoomNotReserved(@Param("shelter_id") Long shelterId);
+//    @Query(value =  "SELECT r.id " +
+//                    "FROM Room r " +
+//                    "WHERE r.shelter.id=:shelter_id AND r.id NOT IN (" +
+//                    "SELECT r1.id " +
+//                    "FROM Room r1 JOIN Reservation ON (r1.reservation.id = Reservation.id))", nativeQuery = true)
+//    List<Long> getRoomNotReserved(@Param("shelter_id") Long shelterId);
 
     @Query(value = "SELECT rs.room_id FROM reserved_rooms rs WHERE rs.reservation_id=:reservation_id", nativeQuery = true)
     List<Long> getRoomByReservation(@Param("reservation_id") Long reservationId);
