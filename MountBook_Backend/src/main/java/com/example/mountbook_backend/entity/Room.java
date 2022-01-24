@@ -1,36 +1,50 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Room {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String description;
+
+    @NotBlank
+    @Size(max = 20)
+    private String name;
+
+    @NotBlank
     private int beds;
+
+    @NotBlank
     private float price;
+
+    @Column(columnDefinition = "TEXT DEFAULT ''")
+    private String note;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinTable(name = "shelterRooms")
     private Shelter shelter;
 
     public Room() {}
 
-    public Room(String description, int beds, float price) {
-        this.description = description;
+    public Room(String name, int beds, float price) {
+        this.name = name;
         this.beds = beds;
         this.price = price;
     }
+
 
     public Long getId() {
         return id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String description) {
+        this.name = name;
     }
 
     public int getBeds() {
@@ -48,4 +62,13 @@ public class Room {
     public void setPrice(float price) {
         this.price = price;
     }
+
+    public Shelter getShelter() {
+        return shelter;
+    }
+
+    public void setShelter(Shelter shelter) {
+        this.shelter = shelter;
+    }
+
 }

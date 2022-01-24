@@ -1,84 +1,121 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 public class Shelter {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(max = 50)
     private String name;
+
+    @NotBlank
+    @Size(max = 120)
     private String address;
+
+    @Column(columnDefinition = "DATE", nullable = false)
     private Date open;
+
+    @Column(columnDefinition = "DATE", nullable = false)
     private Date close;
+
+    @NotBlank
     private float altitude;
+
+    @NotBlank
+    private float longitude;
+
+    @NotBlank
+    private float latitude;
+
+    @NotBlank
     private Long telephoneNumber;
+
+    @NotBlank
+    @Size(max = 120)
     private String webSite;
+
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    @Column(unique = true)
     private String email;
-    @OneToMany(mappedBy = "shelter", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Room> rooms;
-//  private String email;
 
+    @NotBlank
+    private String description;
 
-    public Shelter() {    }
+    private String image;   //link immagine, base64, da decidere
 
-    public Shelter(String name, String address, Date open, Date close, float altitude, Long telephoneNumber, String webSite, String email) {
+    public Shelter() {}
+
+    public Shelter(String name, String address, Long telephoneNumber) {
         this.name = name;
         this.address = address;
-        this.open = open;
-        this.close = close;
-        this.altitude = altitude;
         this.telephoneNumber = telephoneNumber;
-        this.webSite = webSite;
-        this.email = email;
     }
 
     public Long getId() {return id;}
 
     public String getName() {return name;}
+
     public void setName(String name) {this.name = name;}
 
     public String getAddress() {return address;}
+
     public void setAddress(String address) {this.address = address;}
 
     public Date getOpen() {return open;}
+
     public void setOpen(Date open) {this.open = open;}
 
     public Date getClose() {return close;}
-    public void setClose(java.sql.Date close) {this.close = close;}
+
+    public void setClose(Date close) {this.close = close;}
 
     public float getAltitude() {return altitude;}
+
     public void setAltitude(float altitude) {this.altitude = altitude;}
 
+    public float getLongitude() {return longitude;}
+
+    public void setLongitude(float longitude) {this.longitude = longitude;}
+
+    public float getLatitude() {return latitude;}
+
+    public void setLatitude(float latitude) {this.latitude = latitude;}
+   
     public Long getTelephoneNumber() {return telephoneNumber;}
+
     public void setTelephoneNumber(Long telephoneNumber) {this.telephoneNumber = telephoneNumber;}
 
     public String getWebSite() {return webSite;}
+
     public void setWebSite(String webSite) {this.webSite = webSite;}
 
     public String getEmail() {return email;}
+
     public void setEmail(String email) {this.email = email;}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Shelter shelter = (Shelter) o;
-        return Float.compare(shelter.altitude, altitude) == 0 &&
-                id.equals(shelter.id) &&
-                Objects.equals(name, shelter.name) &&
-                Objects.equals(address, shelter.address) &&
-                Objects.equals(open, shelter.open) &&
-                Objects.equals(close, shelter.close) &&
-                Objects.equals(telephoneNumber, shelter.telephoneNumber) &&
-                Objects.equals(webSite, shelter.webSite) &&
-                Objects.equals(email, shelter.email);
+    public String getDescription() {
+        return description;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, address, open, close, altitude, telephoneNumber, webSite, email);
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
