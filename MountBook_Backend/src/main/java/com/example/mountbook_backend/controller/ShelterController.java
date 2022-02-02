@@ -6,14 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.mountbook_backend.entity.Shelter;
-import com.example.mountbook_backend.repository.RoomRepository;
 import com.example.mountbook_backend.repository.ShelterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.swing.event.HyperlinkEvent;
 
 @RestController
 @RequestMapping("/api/shelter")
@@ -21,8 +18,6 @@ public class ShelterController {
 
     @Autowired
     ShelterRepository shelterRepository;
-    @Autowired
-    RoomRepository roomRepository;
 
     @GetMapping("/findByDate")
     public ResponseEntity getFreeShelter(@RequestParam Date dateStart, @RequestParam Date dateEnd){

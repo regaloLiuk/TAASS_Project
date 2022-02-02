@@ -14,11 +14,8 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinTable(name = "reserved_rooms",
-            joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id", nullable = true),
-            inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id", nullable = true))
-    private List<Room> reservedRooms;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Shelter shelter;
 
     @Column(nullable = false)
     private int guests;
@@ -31,9 +28,9 @@ public class Reservation {
 
     public Reservation() {}
 
-    public Reservation(User user, List<Room> reservedRooms, int guests, Date firstDay, Date lastDay) {
+    public Reservation(User user, Shelter shelter, int guests, Date firstDay, Date lastDay) {
         this.user = user;
-        this.reservedRooms = reservedRooms;
+        this.shelter = shelter;
         this.guests = guests;
         this.firstDay = firstDay;
         this.lastDay = lastDay;
@@ -51,12 +48,12 @@ public class Reservation {
         this.user = user;
     }
 
-    public List<Room> getReservedRooms() {
-        return reservedRooms;
+    public Shelter getShelter() {
+        return shelter;
     }
 
-    public void setReservedRooms(List<Room> reservedRooms) {
-        this.reservedRooms = reservedRooms;
+    public void setShelter(Shelter shelter) {
+        this.shelter = shelter;
     }
 
     public int getGuests() {
@@ -75,11 +72,11 @@ public class Reservation {
         this.firstDay = firstDay;
     }
 
-    public Date getLasttDay() {
+    public Date getLastDay() {
         return lastDay;
     }
 
-    public void setLasttDay(Date lasttDay) {
-        this.lastDay = lasttDay;
+    public void setLastDay(Date lastDay) {
+        this.lastDay = lastDay;
     }
 }

@@ -26,6 +26,9 @@ public class Shelter {
     @Column(columnDefinition = "DATE", nullable = false)
     private Date close;
 
+    @Column(nullable = false)
+    private int maxNumBed;
+
     @NotBlank
     private float altitude;
 
@@ -55,9 +58,10 @@ public class Shelter {
 
     public Shelter() {}
 
-    public Shelter(String name, String address, Long telephoneNumber) {
+    public Shelter(String name, String address, int maxNumBed, Long telephoneNumber) {
         this.name = name;
         this.address = address;
+        this.maxNumBed = maxNumBed;
         this.telephoneNumber = telephoneNumber;
     }
 
@@ -78,6 +82,14 @@ public class Shelter {
     public Date getClose() {return close;}
 
     public void setClose(Date close) {this.close = close;}
+
+    public int getMaxNumBed() {
+        return maxNumBed;
+    }
+
+    public void setMaxNumBed(int maxNumBed) {
+        this.maxNumBed = maxNumBed;
+    }
 
     public float getAltitude() {return altitude;}
 

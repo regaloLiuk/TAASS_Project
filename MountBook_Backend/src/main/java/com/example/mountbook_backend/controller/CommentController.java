@@ -46,12 +46,10 @@ public class CommentController {
         //check if the user have done the journey
         List<Reservation> userReservation = reservationRepository.findAllByUser(user.get());
         boolean haveUserDoneJourney = false;
+        //ITERATE ALL RESERVATION OF A USER
         for (Reservation r : userReservation){
-            for(Room room : r.getReservedRooms()) {
-                Optional<Shelter> reservedShelter = shelterRepository.findShelterByRoom(room.getId());
-                if (shelter.get().getId() == reservedShelter.get().getId())
-                    haveUserDoneJourney=true;
-            }
+            if (r.getShelter().getId() == commentRequest.getShelter())
+                haveUserDoneJourney=true;
         }
         if(!haveUserDoneJourney)
             return new ResponseEntity("user not have done the journey", HttpStatus.BAD_REQUEST);

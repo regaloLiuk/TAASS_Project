@@ -17,23 +17,9 @@ INSERT INTO user_roles (user_id, role_id) VALUES (4,3);
 INSERT INTO user_roles (user_id, role_id) VALUES (4,2);
 INSERT INTO user_roles (user_id, role_id) VALUES (4,1);
 
-INSERT INTO shelter (id, address, altitude,longitude, latitude, close, email, name, open, telephone_number, web_site, description) VALUES (1, 'via in cima alla montegna più alta', 2567, 145.654, -56.9822, '2022-05-30', 'montainrefuge@email.com','il rifugio della motagna', '2022-01-01', 1123456789,'www.rifugio.it','un rifugio montano alla vecchia maniera con tutti i confort moderni');
-INSERT INTO shelter (id, address, altitude,longitude, latitude, close, email, name, open, telephone_number, web_site, description) VALUES (2, 'via poco trafficata', 2567, -96.214, 65.985, '2022-09-30', 'rifugiocalmamente@email.com','rifugio Calmamente', '2022-04-01', 1123456789,'www.rifugio.it', 'un luogo di pace e serenità lontano dallo stress cittadino');
-INSERT INTO shelter (id, address, altitude,longitude, latitude, close, email, name, open, telephone_number, web_site, description) VALUES (3, 'corso intorno al lago', 2567, 176.369, 55.5486, '2022-12-31', 'lakeshelter@email.com','lake resort', '2022-01-01', 1123456789,'www.rifugio.it', 'un rifugio a due passi dal lago');
-
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (1, 2, 'room 101', 25.6, 1, '');
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (2, 4, 'room 202', 46.8, 1, '');
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (3, 6, 'room 303', 102.1, 1, '');
-
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (4, 4, 'room 101', 60.6, 2, '');
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (5, 4, 'room 102', 60.6, 2, '');
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (6, 2, 'room 201', 45.9, 2, '');
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (7, 2, 'room 202', 45.9, 2, '');
-
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (8, 10, 'room 101', 90.0, 3, '');
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (9, 6, 'room 101', 60.5, 3, '');
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (10, 4, 'room 101', 40.6, 3, '');
-INSERT INTO room (id, beds, name, price, shelter_id, note) VALUES (11, 4, 'room 101', 40.6, 3, '');
+INSERT INTO shelter (id, address, maxNumBed, altitude, longitude, latitude, close, email, name, open, telephone_number, web_site, description) VALUES (1, 'via in cima alla montegna più alta', 20, 2567, 145.654, -56.9822, '2022-05-30', 'montainrefuge@email.com','il rifugio della motagna', '2022-01-01', 1123456789,'www.rifugio.it','un rifugio montano alla vecchia maniera con tutti i confort moderni');
+INSERT INTO shelter (id, address, maxNumBed, altitude, longitude, latitude, close, email, name, open, telephone_number, web_site, description) VALUES (2, 'via poco trafficata', 2567, -96.214, 20, 65.985, '2022-09-30', 'rifugiocalmamente@email.com','rifugio Calmamente', '2022-04-01', 1123456789,'www.rifugio.it', 'un luogo di pace e serenità lontano dallo stress cittadino');
+INSERT INTO shelter (id, address, maxNumBed, altitude, longitude, latitude, close, email, name, open, telephone_number, web_site, description) VALUES (3, 'corso intorno al lago', 2567, 176.369, 20, 55.5486, '2022-12-31', 'lakeshelter@email.com','lake resort', '2022-01-01', 1123456789,'www.rifugio.it', 'un rifugio a due passi dal lago');
 
 INSERT INTO service (id, shelter_id, wifi, equipment, car) VALUES (1,1,true,true, false);
 INSERT INTO service (id, shelter_id, wifi, equipment, car) VALUES (2,2,false ,false , true );

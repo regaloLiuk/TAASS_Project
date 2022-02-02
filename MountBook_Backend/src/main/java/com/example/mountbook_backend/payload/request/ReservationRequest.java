@@ -9,7 +9,8 @@ import java.util.List;
 
 public class ReservationRequest {
     private Long user;
-    private List<Long> reservedRooms;
+    private Long shelter;
+//    private int stayType;   // 0 -> null | 1 -> half board | 2 -> full board
     private int guests;
     private Date firstDay;
     private Date lastDay;
@@ -22,12 +23,12 @@ public class ReservationRequest {
         this.user = user;
     }
 
-    public List<Long> getReservedRooms() {
-        return reservedRooms;
+    public Long getShelter() {
+        return shelter;
     }
 
-    public void setReservedRooms(List<Long> reservedRooms) {
-        this.reservedRooms = reservedRooms;
+    public void setShelter(Long shelter) {
+        this.shelter = shelter;
     }
 
     public int getGuests() {
