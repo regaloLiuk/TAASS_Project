@@ -18,12 +18,15 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findAllByUser(User user);
 
-    //verify that's the rooms are not reserved for the date selected
-//    @Query(value = "SELECT r.id FROM reservation r JOIN reserved_rooms rs ON (r.id = rs.reservation_id) WHERE (r.first_day<=:first_day OR r.last_day>=:last_day) AND rs.room_id IN :rooms", nativeQuery = true)
-//    List<Long> existsReservationByFirstDayAndLastDayAndReservedRooms(@Param("first_day") Date firstDay, @Param("last_day") Date lastDay, @Param("rooms") List<Long> rooms);
+    @Query(value = "SELECT r FROM Reservation r WHERE (r.firstDay<=:first_day OR r.lastDay>=:last_day)")
+    List<Reservation> findReservationByDate(@Param("first_day") Date firstDay, @Param("last_day") Date lastDay);
 
     @Query(value = "SELECT r FROM Reservation r  WHERE (r.firstDay<=:first_day OR r.lastDay>=:last_day) AND r.shelter.id IN :shelter")
     List<Reservation> findReservationByDateAndShelter(@Param("first_day") Date firstDay, @Param("last_day") Date lastDay, @Param("shelter") Long shelter);
+
+    @Query(value = "SELECT r FROM Reservation r  WHERE  r.shelter.id IN :shelter")
+    List<Reservation> findReservationByShelter(@Param("shelter") Long shelter);
+
 
 
 
