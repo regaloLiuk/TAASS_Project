@@ -71,11 +71,7 @@
                         </div> 
                     </form>
                 </article>      
-
-
             </div>
-
-
         </div>
        
     </body>
@@ -91,8 +87,10 @@
             console.log('Name: ' + profile.getName());
             console.log('Image URL: ' + profile.getImageUrl());
             console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-         }
+            window.location.replace("home.php");
 
+         }
+        
         function up(){
             $.ajax({
                 method: "GET",
@@ -117,5 +115,7 @@
                 jsn_customers:null,
                 }
         })
+
+
     </script>
 </html>

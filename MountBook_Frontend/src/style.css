@@ -1,0 +1,80 @@
+.myBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 50px;
+    z-index: 99;
+    font-size: 48px;
+    border: none;
+    outline: none;
+    background-color: #77b300;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 4px;
+  }
+  
+  #myBtn:hover {
+    background-color: #555;
+  }
+
+  .navbar-custom {
+      background-color: #66ff66;
+  }
+
+  @media only all and (max-width: 1050px) {
+      
+      #div_map_home{
+          width:90%; 
+          margin:auto; 
+          margin-top: 70px; }
+
+      #div_lista_rifugi{
+          margin:auto; 
+          width: 75%; 
+          margin-top: 30px; 
+          min-height: 400px; 
+          height: 1200px; 
+          min-width: 500px;
+          overflow-y: scroll;}
+
+      #map_home{
+          width: 90% ; 
+          margin:auto;
+          height: 400px;  }
+
+  }
+
+  @media only all and (min-width: 1050px) {
+
+      #div_map_home{ 
+          float:right; 
+          width:50%; 
+          margin:auto; 
+          margin-top: 110px; }
+
+      #div_lista_rifugi{
+          float:left; 
+          margin:auto; 
+          max-width: 50%; 
+          margin-top: 30px; 
+          height: 900px; 
+          min-height: 400px; 
+          min-width: 500px; 
+          overflow-y: scroll;}
+
+      #map_home{
+          width: 90% ; 
+          height: 900px; 
+          margin:auto;  
+          border-radius: 5%; }
+
+      .myAlert-bottom{
+          position: fixed;
+          bottom: 5px;
+          left:2%;
+          width: 96%;
+      }
+
+
+  }
