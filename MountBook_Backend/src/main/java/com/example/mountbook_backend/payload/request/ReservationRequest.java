@@ -50,7 +50,7 @@ public class ReservationRequest {
         return lastDay;
     }
 
-    public void setLastDay(Date lasttDay) {
-        this.lastDay = lasttDay;
+    public void setLastDay(Date lastDay) {
+        this.lastDay = lastDay;
     }
 }

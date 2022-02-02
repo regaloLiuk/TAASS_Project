@@ -22,6 +22,12 @@ public class RoomController {
     ShelterRepository shelterRepository;
 
 
-//     }
+//    @GetMapping("freeRoom")
+//    public ResponseEntity getFreeRoom(@RequestParam Long shelterId){
+//        List<Long> roomList = roomRepository.getRoomNotReserved(shelterId);
+//        if (roomList.isEmpty())
+//            return new ResponseEntity("no room are left in this shelter", HttpStatus.NOT_FOUND);
+//        return new ResponseEntity("rooms: " + roomList, HttpStatus.OK);
+//    }
 
 }
