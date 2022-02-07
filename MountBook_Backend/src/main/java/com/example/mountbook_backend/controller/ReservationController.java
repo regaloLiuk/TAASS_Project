@@ -31,7 +31,7 @@ public class ReservationController {
     ShelterRepository shelterRepository;
 
     @GetMapping("/getReservationForUser")
-    public ResponseEntity getReservationForUser(@RequestBody Long userId) {
+    public ResponseEntity getReservationForUser(@RequestParam Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty())
             return new ResponseEntity("invalid user", HttpStatus.BAD_REQUEST);

@@ -62,9 +62,9 @@ public class OvernightStaysController {
         return new ResponseEntity("your overnight is signed correctly", HttpStatus.OK);
     }
 
-    @PostMapping("/overnightStayRequest")
-    public ResponseEntity removeOvernightStaySign(@RequestParam Long overnigthId, Long userId) {
-        overnightStaysRepository.deleteSign(overnigthId, userId);
+    @PostMapping("/overnightStayDelete")
+    public ResponseEntity removeOvernightStaySign(@RequestParam Long overnightId, Long userId) {
+        overnightStaysRepository.deleteSign(overnightId, userId);
         return new ResponseEntity("your sign is correctly removed", HttpStatus.OK);
     }
 }

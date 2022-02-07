@@ -29,6 +29,8 @@ public class Shelter {
     @Column(nullable = false)
     private int maxNumBed;
 
+    private float price;    // il prezzo è riferito a persona
+
     @NotBlank
     private float altitude;
 

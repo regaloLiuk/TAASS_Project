@@ -16,8 +16,8 @@ public interface ShelterRepository extends JpaRepository<Shelter,Long> {
 
     List<Shelter> findAll();
 
-    @Query(value = "SELECT DISTINCT (s) FROM Shelter s WHERE s.id NOT IN (" +
-            " SELECT s1 FROM Shelter s1 JOIN Reservation res ON (s1.id = res.id)")
+    @Query(value = "SELECT DISTINCT (s) FROM Shelter s WHERE s NOT IN (" +
+            " SELECT s1 FROM Shelter s1 JOIN Reservation res ON (s1.id = res.id))")
     List<Shelter> findAllSheltersNotReserved();
 
     @Query(value = "SELECT DISTINCT (s) FROM Shelter s WHERE s.id IN (" +
@@ -35,7 +35,7 @@ public interface ShelterRepository extends JpaRepository<Shelter,Long> {
     @Query(value = "SELECT s.shelter FROM Service s WHERE s.wifi=:wifi OR s.equipment=:equipment OR s.car=:car")
     List<Shelter> findShelterByService(@Param("wifi") boolean wifi, @Param("equipment") boolean equipment, @Param("car") boolean car);
 
-    @Query(value = "SELECT r.shelter FROM Room r WHERE r.price>=:min_price AND r.price<=:max_price")
+    @Query(value = "SELECT s FROM Shelter s WHERE s.price>=:min_price AND s.price<=:max_price")
     List<Shelter> findShelterByPrice(@Param("min_price") float minPrice, @Param("max_price") float maxPrice);
 
 }

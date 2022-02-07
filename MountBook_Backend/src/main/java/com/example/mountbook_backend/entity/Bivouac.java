@@ -17,7 +17,7 @@ public class Bivouac{
 
     private int bed;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT = true")
+    @Column(columnDefinition = "BOOLEAN DEFAULT true")
     private boolean isOpen;
 
     @Column(columnDefinition = "TEXT DEFAULT ''")
