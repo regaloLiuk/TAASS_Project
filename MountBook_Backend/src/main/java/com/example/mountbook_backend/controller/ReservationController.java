@@ -38,8 +38,6 @@ public class ReservationController {
         return new ResponseEntity(reservationRepository.findAllByUser(user.get()), HttpStatus.OK);
     }
 
-
-
     @PostMapping("/doReservation")
     public ResponseEntity addNewShelter(@RequestBody ReservationRequest reservationRequest) {
 
