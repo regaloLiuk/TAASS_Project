@@ -2,10 +2,11 @@ package com.example.mountbook_backend.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class OvernightStays {
+public class OvernightStays implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

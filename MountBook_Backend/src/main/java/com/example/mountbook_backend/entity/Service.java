@@ -1,9 +1,10 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Service {
+public class Service implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

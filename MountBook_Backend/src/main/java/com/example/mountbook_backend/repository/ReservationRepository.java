@@ -21,10 +21,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = "SELECT r FROM Reservation r WHERE (r.firstDay<=:first_day OR r.lastDay>=:last_day)")
     List<Reservation> findReservationByDate(@Param("first_day") Date firstDay, @Param("last_day") Date lastDay);
 
-    @Query(value = "SELECT r FROM Reservation r  WHERE (r.firstDay<=:first_day OR r.lastDay>=:last_day) AND r.shelter.id IN :shelter")
+    @Query(value = "SELECT r FROM Reservation r  WHERE (r.firstDay<=:first_day OR r.lastDay>=:last_day) AND r.shelter.id=:shelter")
     List<Reservation> findReservationByDateAndShelter(@Param("first_day") Date firstDay, @Param("last_day") Date lastDay, @Param("shelter") Long shelter);
 
-    @Query(value = "SELECT r FROM Reservation r  WHERE  r.shelter.id IN :shelter")
+    @Query(value = "SELECT r FROM Reservation r  WHERE  r.shelter.id=:shelter")
     List<Reservation> findReservationByShelter(@Param("shelter") Long shelter);
 
 

@@ -2,10 +2,11 @@ package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 
 @Entity
-public class Bivouac{
+public class Bivouac implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

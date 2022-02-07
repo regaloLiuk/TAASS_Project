@@ -24,3 +24,4 @@ INSERT INTO shelter (id, address, max_num_bed, price, altitude, longitude, latit
 INSERT INTO service (id, shelter_id, wifi, equipment, car) VALUES (1,1,true,true, false);
 INSERT INTO service (id, shelter_id, wifi, equipment, car) VALUES (2,2,false ,false , true );
 INSERT INTO service (id, shelter_id, wifi, equipment, car) VALUES (3,3,true,true, true);
+
