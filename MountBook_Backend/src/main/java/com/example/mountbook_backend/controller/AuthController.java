@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    /*@PostMapping("/signin")
+    @PostMapping("/signin")
     public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -60,17 +61,17 @@ public class AuthController {
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
-    }*/
+    }
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public ResponseEntity changePassword(@RequestBody LoginRequest loginRequest) {
         Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
         if (user.isEmpty())
             return new ResponseEntity("username or password are incorrect", HttpStatus.BAD_REQUEST);
         if (!user.get().getPassword().equals(loginRequest.getPassword()))
             return new ResponseEntity("username or password are incorrect", HttpStatus.BAD_REQUEST);
-        return new ResponseEntity("Welcome " + user.get().getUsername(), HttpStatus.OK);
-    }
+        return new ResponseEntity("Welcome: " + user.get().getUsername(), HttpStatus.OK);
+    }*/
 
     @PostMapping("/signup")
     public ResponseEntity registerUser(@Valid @RequestBody SignupRequest signUpRequest) {

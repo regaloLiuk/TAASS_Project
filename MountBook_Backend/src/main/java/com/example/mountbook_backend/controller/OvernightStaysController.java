@@ -17,7 +17,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/OvernightStays")
+@RequestMapping("/api/v1/OvernightStays")
 public class OvernightStaysController {
 
     @Autowired

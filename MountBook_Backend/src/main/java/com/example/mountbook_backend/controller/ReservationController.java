@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/reservation")
+@RequestMapping("/api/v1/reservation")
 public class ReservationController implements Serializable {
 
     @Autowired

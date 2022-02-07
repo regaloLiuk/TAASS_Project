@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/shelter")
+@RequestMapping("/api/v1/shelter")
 public class ShelterController {
 
     @Autowired

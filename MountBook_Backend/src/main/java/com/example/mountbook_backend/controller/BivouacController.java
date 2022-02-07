@@ -13,7 +13,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/bivouac")
+@RequestMapping("/api/v1/bivouac")
 public class BivouacController {
     
     @Autowired
