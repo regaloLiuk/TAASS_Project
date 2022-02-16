@@ -2,7 +2,7 @@ INSERT INTO role (id, name) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO role (id, name) VALUES (2, 'ROLE_MODERATOR');
 INSERT INTO role (id, name) VALUES (3, 'ROLE_USER');
 INSERT INTO role (id, name) VALUES (4, 'ROLE_HOST');
-
+                                                                                            #password
 INSERT INTO users (id, email, password,username) VALUES (1, 'ginopasticcino@email.com', '$2a$10$rQWQVQzeZGLE7BB9Vgv5LuaH1SW.S43eJLnx3H80C3sHNlFXU8xZ6', 'ginoPasticcino33');
 INSERT INTO users (id, email, password,username) VALUES (2, 'pippofranco@email.com', '$2a$10$rQWQVQzeZGLE7BB9Vgv5LuaH1SW.S43eJLnx3H80C3sHNlFXU8xZ6', 'pippoFranco99');
 INSERT INTO users (id, email, password,username) VALUES (3, 'cicciobello@email.com', '$2a$10$rQWQVQzeZGLE7BB9Vgv5LuaH1SW.S43eJLnx3H80C3sHNlFXU8xZ6', 'CiccioBellissimo01');

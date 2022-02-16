@@ -94,6 +94,14 @@ public class Shelter implements Serializable {
         this.maxNumBed = maxNumBed;
     }
 
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     public float getAltitude() {return altitude;}
 
     public void setAltitude(float altitude) {this.altitude = altitude;}

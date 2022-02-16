@@ -54,15 +54,25 @@ public class ReservationController implements Serializable {
         if (reservationRequest.getGuests() < 0)
             return new ResponseEntity("invalid guest number", HttpStatus.BAD_REQUEST);
 
+        //check that's first day is before last day
+        if (!reservationRequest.getFirstDay().before(reservationRequest.getLastDay()))
+            return new ResponseEntity("invalid data: first day is after last day", HttpStatus.BAD_REQUEST);
+
         //check that's the date isn't before the current date and the date isn't before the shelter open date
-        if (reservationRequest.getFirstDay() == null || reservationRequest.getFirstDay().before(new Date()) ||
-            reservationRequest.getFirstDay().before(shelter.get().getOpen()))
-            return new ResponseEntity("invalid data", HttpStatus.BAD_REQUEST);
+        if (reservationRequest.getFirstDay() == null)
+            return new ResponseEntity("invalid data: first day is null", HttpStatus.BAD_REQUEST);
+        if (reservationRequest.getFirstDay().before(new Date()))
+            return new ResponseEntity("invalid data: first day is before current data", HttpStatus.BAD_REQUEST);
+        if (reservationRequest.getFirstDay().before(shelter.get().getOpen()))
+            return new ResponseEntity("invalid data: first day is before shelter's open data", HttpStatus.BAD_REQUEST);
 
         //check that's the date isn't before the current date and the date isn't after the shelter close date
-        if (reservationRequest.getLastDay() == null || reservationRequest.getLastDay().before(new Date())||
-            reservationRequest.getLastDay().after(shelter.get().getClose()))
-            return new ResponseEntity("invalid data", HttpStatus.BAD_REQUEST);
+        if (reservationRequest.getLastDay() == null)
+            return new ResponseEntity("invalid data: last day is null", HttpStatus.BAD_REQUEST);
+        if (reservationRequest.getLastDay().before(new Date()))
+            return new ResponseEntity("invalid data: last day is before current data", HttpStatus.BAD_REQUEST);
+        if (reservationRequest.getLastDay().after(shelter.get().getClose()))
+            return new ResponseEntity("invalid data: the shelter is closed for selected data", HttpStatus.BAD_REQUEST);
 
         //check that's, for the selected date, the rooms are not reserved yet
         List<Reservation> reservationForShelter = reservationRepository.findReservationByDateAndShelter(reservationRequest.getFirstDay(),

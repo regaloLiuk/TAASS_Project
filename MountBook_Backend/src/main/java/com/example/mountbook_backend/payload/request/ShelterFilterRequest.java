@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class ShelterFilterRequest {
 
+    int guest;
     float minPrice;
     float maxPrice;
     Date dateStart;
@@ -11,6 +12,14 @@ public class ShelterFilterRequest {
     Boolean wifi;
     Boolean car;
     Boolean equipment;
+
+    public int getGuest() {
+        return guest;
+    }
+
+    public void setGuest(int guest) {
+        this.guest = guest;
+    }
 
     public float getMinPrice() {
         return minPrice;

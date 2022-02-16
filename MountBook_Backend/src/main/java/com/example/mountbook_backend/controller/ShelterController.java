@@ -89,7 +89,7 @@ public class ShelterController {
 //    }
 
     //unique method for get shelter by filter
-    @GetMapping("findFreeShelterByUserFilter")
+    @GetMapping("/findFreeShelterByUserFilter")
     public ResponseEntity findByUserFilter(@RequestBody ShelterFilterRequest request){
         Set<Shelter> result = new HashSet<>();
 
@@ -107,8 +107,13 @@ public class ShelterController {
                 for (Reservation r : reservations){
                     countBed+=r.getGuests();
                 }
-                if (countBed <= s.getMaxNumBed())
-                    result.add(s);
+                if(request.getGuest() > 0){ //
+                    if (countBed + request.getGuest() <= s.getMaxNumBed())
+                        result.add(s);
+                }else { //at least 1 free bad
+                    if (countBed <= s.getMaxNumBed())
+                        result.add(s);
+                }
             }
         }
 
