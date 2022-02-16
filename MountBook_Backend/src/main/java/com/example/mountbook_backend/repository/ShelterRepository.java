@@ -32,8 +32,12 @@ public interface ShelterRepository extends JpaRepository<Shelter,Long> {
             " SELECT s1 FROM Shelter s1 JOIN Reservation res ON (s1.id = res.id) WHERE res.firstDay=:date_start AND res.lastDay=:date_end)")
     List<Shelter> findSheltersReservedByDate(@Param("date_start") Date dateStart, @Param("date_end") Date dateEnd);
 
-    @Query(value = "SELECT s.shelter FROM Service s WHERE s.wifi=:wifi OR s.equipment=:equipment OR s.car=:car")
-    List<Shelter> findShelterByService(@Param("wifi") boolean wifi, @Param("equipment") boolean equipment, @Param("car") boolean car);
+    @Query(value = "SELECT s.shelter FROM Service s WHERE s.car=true")
+    List<Shelter> findShelterWithCar();
+    @Query(value = "SELECT s.shelter FROM Service s WHERE s.wifi=true")
+    List<Shelter> findShelterWithWifi();
+    @Query(value = "SELECT s.shelter FROM Service s WHERE s.equipment=true")
+    List<Shelter> findShelterWithEquipment();
 
     @Query(value = "SELECT s FROM Shelter s WHERE s.price>=:min_price AND s.price<=:max_price")
     List<Shelter> findShelterByPrice(@Param("min_price") float minPrice, @Param("max_price") float maxPrice);

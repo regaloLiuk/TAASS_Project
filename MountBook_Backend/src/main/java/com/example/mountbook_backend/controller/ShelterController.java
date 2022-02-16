@@ -91,13 +91,13 @@ public class ShelterController {
     //unique method for get shelter by filter
     @GetMapping("/findFreeShelterByUserFilter")
     public ResponseEntity findByUserFilter(@RequestBody ShelterFilterRequest request){
-        Set<Shelter> result = new HashSet<>();
+        Set<Shelter> freeForDate = new HashSet<>();
 
         //check for date
         if (request.getDateStart() != null && request.getDateEnd()!=null){
             List<Shelter> sheltersNotReserved = shelterRepository.findSheltersNotReservedByDate(request.getDateStart(), request.getDateEnd());
             for (Shelter s : sheltersNotReserved)
-                result.add(s);
+                freeForDate.add(s);
 
             List<Shelter> sheltersReserved = shelterRepository.findSheltersReservedByDate(request.getDateStart(), request.getDateEnd());
             //itrerate all reserved shelter and check number of guest
@@ -109,26 +109,57 @@ public class ShelterController {
                 }
                 if(request.getGuest() > 0){ //
                     if (countBed + request.getGuest() <= s.getMaxNumBed())
-                        result.add(s);
+                        freeForDate.add(s);
                 }else { //at least 1 free bad
                     if (countBed <= s.getMaxNumBed())
-                        result.add(s);
+                        freeForDate.add(s);
                 }
             }
         }
-
+        Set<Shelter> fitInPrice = new HashSet<>();
         //check for price
-        if (request.getMinPrice() > 0 && request.getMaxPrice()>0) {
+        if (request.getMinPrice() >= 0 && request.getMaxPrice()>=0) {
             List<Shelter> s1 = shelterRepository.findShelterByPrice(request.getMinPrice(), request.getMaxPrice());
             for (Shelter s : s1)
-                result.add(s);
+                fitInPrice.add(s);
         }
+        freeForDate.retainAll(fitInPrice);
 
         //check for service
-        List<Shelter> s2 = shelterRepository.findShelterByService(request.getWifi(),request.getEquipment(),request.getCar());
-        for (Shelter s : s2)
-            result.add(s);
+        if (request.getWifi()||request.getCar()||request.getEquipment()) {
 
-        return new ResponseEntity(result, HttpStatus.OK);
+            Set<Shelter> haveServices = new HashSet<>();
+            if (request.getWifi()) {
+                for (Shelter s : shelterRepository.findShelterWithWifi())
+                    haveServices.add(s);
+            }
+
+            if (request.getCar()) {
+                Set<Shelter> haveCar = new HashSet<>();
+                if (!haveServices.isEmpty()) {
+                    for (Shelter s : shelterRepository.findShelterWithCar())
+                        haveCar.add(s);
+                    haveServices.retainAll(haveCar);
+                }else{
+                    for (Shelter s : shelterRepository.findShelterWithCar())
+                        haveServices.add(s);
+                }
+            }
+
+            if (request.getEquipment()) {
+                Set<Shelter> haveEquipment = new HashSet<>();
+                if (!haveServices.isEmpty()) {
+                    for (Shelter s : shelterRepository.findShelterWithEquipment())
+                        haveEquipment.add(s);
+                    haveServices.retainAll(haveEquipment);
+                }else{
+                    for (Shelter s : shelterRepository.findShelterWithEquipment())
+                        haveServices.add(s);
+                }
+            }
+            freeForDate.retainAll(haveServices);
+        }
+
+        return new ResponseEntity(freeForDate, HttpStatus.OK);
     }
 }
