@@ -28,6 +28,9 @@ public class Comment implements Serializable {
     public Comment(User user, Shelter shelter) {
         this.user = user;
         this.shelter = shelter;
+        this.clear=false;
+        this.service=false;
+        this.ospitality=false;
     }
 
     public Long getId() {
@@ -66,11 +69,7 @@ public class Comment implements Serializable {
         this.clear = clear;
     }
 
-    public boolean isOspitality() {
-        return ospitality;
-    }
+    public boolean isOspitality() { return ospitality; }
 
-    public void setOspitality(boolean ospitality) {
-        this.ospitality = ospitality;
-    }
+    public void setOspitality(boolean ospitality) { this.ospitality = ospitality; }
 }

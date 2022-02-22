@@ -56,14 +56,14 @@ public class CommentController {
 
         Comment comment = new Comment(user.get(), shelter.get());
 
-        if (commentRequest.isClear() || !comment.isClear())
-            comment.setClear(commentRequest.isClear());
+        if (commentRequest.isClear())
+            comment.setClear(true);
 
-        if (commentRequest.isService() || !comment.isService())
-            comment.setClear(commentRequest.isService());
+        if (commentRequest.isService())
+            comment.setService(true);
 
-        if (commentRequest.isOspitality() || !comment.isOspitality())
-            comment.setClear(commentRequest.isOspitality());
+        if (commentRequest.isOspitality())
+            comment.setOspitality(true);
 
         commentRepository.save(comment);
         return new ResponseEntity("tanks for your valutation", HttpStatus.OK);

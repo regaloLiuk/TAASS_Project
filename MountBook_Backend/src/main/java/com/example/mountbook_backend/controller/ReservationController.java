@@ -3,6 +3,7 @@ package com.example.mountbook_backend.controller;
 import com.example.mountbook_backend.entity.Reservation;
 import com.example.mountbook_backend.entity.Shelter;
 import com.example.mountbook_backend.entity.User;
+import com.example.mountbook_backend.payload.request.ReservationDeleteRequest;
 import com.example.mountbook_backend.payload.request.ReservationRequest;
 import com.example.mountbook_backend.repository.ReservationRepository;
 import com.example.mountbook_backend.repository.ShelterRepository;
@@ -86,18 +87,39 @@ public class ReservationController implements Serializable {
             return new ResponseEntity("there's not enought space for reservation", HttpStatus.BAD_REQUEST);
 
 
-        reservationRepository.save(new Reservation(user.get(), shelter.get(), reservationRequest.getGuests(), reservationRequest.getFirstDay(), reservationRequest.getLastDay()));
-        return new ResponseEntity("reservation successfully evaluated", HttpStatus.OK);
+        Reservation res=reservationRepository.save(new Reservation(user.get(), shelter.get(), reservationRequest.getGuests(), reservationRequest.getFirstDay(), reservationRequest.getLastDay()));
+
+        return new ResponseEntity(res, HttpStatus.OK);
     }
 
-    @PostMapping("deleteReservation")
-    public ResponseEntity deleteReservation(@RequestParam Long userId, @RequestParam Long reservationId) {
+//    @PostMapping("deleteReservation")
+//    public ResponseEntity deleteReservation(@RequestParam Long userId, @RequestParam Long reservationId) {
+//
+//        Optional<User> user = userRepository.findById(userId);
+//        if (user.isEmpty())
+//            return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
+//
+//        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+//        if (reservation.isEmpty())
+//            return new ResponseEntity<>("reservation not found", HttpStatus.BAD_REQUEST);
+//
+//        //check if the reservation date is before the current date
+//        if (reservation.get().getFirstDay().before(new Date()))
+//            return new ResponseEntity<>("you can't delete this reservation because you have already do it", HttpStatus.BAD_REQUEST);
+//
+//
+//        reservationRepository.delete(reservation.get());
+//        return new ResponseEntity<>("reservation successfully deleted", HttpStatus.OK);
+//    }
 
-        Optional<User> user = userRepository.findById(userId);
+    @PostMapping("deleteReservation")
+    public ResponseEntity deleteReservation(@RequestBody ReservationDeleteRequest reservationDeleteRequest) {
+
+        Optional<User> user = userRepository.findById(reservationDeleteRequest.getUserId());
         if (user.isEmpty())
             return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
 
-        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        Optional<Reservation> reservation = reservationRepository.findById(reservationDeleteRequest.getReservationId());
         if (reservation.isEmpty())
             return new ResponseEntity<>("reservation not found", HttpStatus.BAD_REQUEST);
 
