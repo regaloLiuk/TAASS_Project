@@ -1,9 +1,16 @@
 package com.example.mountbook_backend.payload.request;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
-public class ShelterFilterRequest {
+public class UserFilterRequest {
 
+    int type; // 0:both, 1:shelter, 2:bivouac
+    @NotEmpty
+    @NotBlank
+    @NotNull
     int guest;
     float minPrice;
     float maxPrice;
@@ -12,6 +19,14 @@ public class ShelterFilterRequest {
     Boolean wifi;
     Boolean car;
     Boolean equipment;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getGuest() {
         return guest;

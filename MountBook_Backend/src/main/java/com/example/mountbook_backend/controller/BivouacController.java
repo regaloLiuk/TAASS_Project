@@ -31,7 +31,6 @@ public class BivouacController {
         if (bivouac.isOpen())
             return new ResponseEntity("now the bivouac is closed", HttpStatus.OK);
         return new ResponseEntity("now the bivouac is open", HttpStatus.OK);
-
     }
 
     @GetMapping("/getBivouacByName")

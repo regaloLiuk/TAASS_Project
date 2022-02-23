@@ -1,11 +1,10 @@
 package com.example.mountbook_backend.controller;
 
-import java.sql.Date;
 import java.util.*;
 
 import com.example.mountbook_backend.entity.Reservation;
 import com.example.mountbook_backend.entity.Shelter;
-import com.example.mountbook_backend.payload.request.ShelterFilterRequest;
+import com.example.mountbook_backend.payload.request.UserFilterRequest;
 import com.example.mountbook_backend.repository.ReservationRepository;
 import com.example.mountbook_backend.repository.ShelterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/shelter")
 public class ShelterController {
-
-    @Autowired
+    //find & get MOVED TO FindController
+    /*@Autowired
     ShelterRepository shelterRepository;
 
     @Autowired
     ReservationRepository reservationRepository;
 
-
-    @GetMapping("/findAll")
+    @GetMapping("/findAllShelter")
     public ResponseEntity getAllFreeShelter(){
         Set<Shelter> result = new HashSet<>();
         List<Shelter> sheltersNotReserved = shelterRepository.findAllSheltersReserved();
@@ -43,56 +41,10 @@ public class ShelterController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
-//    @GetMapping("/findByDate")
-//    public ResponseEntity getFreeShelter(@RequestParam Date dateStart, @RequestParam Date dateEnd){
-//
-//        List<Shelter> sheltersNotReserved = shelterRepository.findSheltersNotReservedByDate(dateStart, dateEnd);
-//        Set<Shelter> result = new HashSet<>();
-//        for (Shelter s : sheltersNotReserved)
-//            result.add(s);
-//
-//        List<Shelter> sheltersReserved = shelterRepository.findSheltersReservedByDate(dateStart, dateEnd);
-//        //itrerate all reserved shelter and check number of guest
-//        for (Shelter s : sheltersReserved){
-//            int countBed = 0;
-//            List<Reservation> reservations = reservationRepository.findReservationByDateAndShelter(dateStart, dateEnd,s.getId());
-//            for (Reservation r : reservations){
-//                countBed+=r.getGuests();
-//            }
-//            if (countBed <= s.getMaxNumBed())
-//                result.add(s);
-//        }
-//
-//        if(result.isEmpty())
-//            return new ResponseEntity<>("no shelter found for this date", HttpStatus.BAD_REQUEST);
-//
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
-
-//    @GetMapping("/findByService")
-//    public ResponseEntity getSheleterFromService(@RequestParam Boolean wifi, @RequestParam Boolean car,
-//                                                 @RequestParam Boolean equipment){
-//        List<Shelter> shelters = shelterRepository.findShelterByService(wifi,equipment,car);
-//        if (shelters.isEmpty())
-//            return new ResponseEntity("no shelter found with this services", HttpStatus.BAD_REQUEST);
-//        return new ResponseEntity(shelters, HttpStatus.OK);
-//    }
-
-//    @GetMapping("/findByPrice")
-//    public ResponseEntity getShelterFromPrice(@RequestParam float minPrice, @RequestParam float maxPrice){
-//        if (maxPrice < 0)
-//            maxPrice = 999999;
-//        List<Shelter> shelters = shelterRepository.findShelterByPrice(minPrice,maxPrice);
-//        if (shelters.isEmpty())
-//            return new ResponseEntity("no shelter found with this price", HttpStatus.BAD_REQUEST);
-//        return new ResponseEntity(shelters, HttpStatus.OK);
-//    }
-
     //unique method for get shelter by filter
     @GetMapping("/findFreeShelterByUserFilter")
-    public ResponseEntity findByUserFilter(@RequestBody ShelterFilterRequest request){
+    public ResponseEntity findByUserFilter(@RequestBody UserFilterRequest request){
         Set<Shelter> freeForDate = new HashSet<>();
-
         //check for date
         if (request.getDateStart() != null && request.getDateEnd()!=null){
             List<Shelter> sheltersNotReserved = shelterRepository.findSheltersNotReservedByDate(request.getDateStart(), request.getDateEnd());
@@ -161,5 +113,5 @@ public class ShelterController {
         }
 
         return new ResponseEntity(freeForDate, HttpStatus.OK);
-    }
+    }*/
 }

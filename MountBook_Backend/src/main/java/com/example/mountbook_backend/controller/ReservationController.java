@@ -92,26 +92,6 @@ public class ReservationController implements Serializable {
         return new ResponseEntity(res, HttpStatus.OK);
     }
 
-//    @PostMapping("deleteReservation")
-//    public ResponseEntity deleteReservation(@RequestParam Long userId, @RequestParam Long reservationId) {
-//
-//        Optional<User> user = userRepository.findById(userId);
-//        if (user.isEmpty())
-//            return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
-//
-//        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
-//        if (reservation.isEmpty())
-//            return new ResponseEntity<>("reservation not found", HttpStatus.BAD_REQUEST);
-//
-//        //check if the reservation date is before the current date
-//        if (reservation.get().getFirstDay().before(new Date()))
-//            return new ResponseEntity<>("you can't delete this reservation because you have already do it", HttpStatus.BAD_REQUEST);
-//
-//
-//        reservationRepository.delete(reservation.get());
-//        return new ResponseEntity<>("reservation successfully deleted", HttpStatus.OK);
-//    }
-
     @PostMapping("deleteReservation")
     public ResponseEntity deleteReservation(@RequestBody ReservationDeleteRequest reservationDeleteRequest) {
 

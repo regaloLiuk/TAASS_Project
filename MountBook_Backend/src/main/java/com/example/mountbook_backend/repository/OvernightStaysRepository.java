@@ -15,8 +15,8 @@ import java.util.List;
 @Repository
 public interface OvernightStaysRepository extends JpaRepository<OvernightStays,Long>{
 
-    @Query(value = "SELECT os.id FROM OvernightStays os WHERE os.firstDay<=:first_day AND os.lastDay>=:last_day AND os.bivouac.id=:bivouac")
-    public List<Long> existsRequestFromDateAndBivouac(@Param("first_day") Date firstDay, @Param("last_day") Date lastDay, @Param("bivouac") Long bivouac);
+    @Query(value = "SELECT os FROM OvernightStays os WHERE os.firstDay<=:first_day AND os.lastDay>=:last_day AND os.bivouac.id=:bivouac")
+    public List<OvernightStays> findRequestFromDateAndBivouac(@Param("first_day") Date firstDay, @Param("last_day") Date lastDay, @Param("bivouac") Long bivouac);
 
     @Query(value = "DELETE FROM OvernightStays os WHERE os.id<=:overnightStay_id AND os.user.id>=:user_id")
     public void deleteSign(@Param("overnightStay_id") Long overnightStayId, @Param("user_id") Long userId);

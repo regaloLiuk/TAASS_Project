@@ -19,6 +19,8 @@ public class Comment implements Serializable {
     private boolean service;
     private boolean clear;
     private boolean ospitality;
+    private boolean food;
+    private boolean location;
     //etc...
 
 
@@ -31,6 +33,8 @@ public class Comment implements Serializable {
         this.clear=false;
         this.service=false;
         this.ospitality=false;
+        this.food=false;
+        this.location=false;
     }
 
     public Long getId() {
@@ -72,4 +76,20 @@ public class Comment implements Serializable {
     public boolean isOspitality() { return ospitality; }
 
     public void setOspitality(boolean ospitality) { this.ospitality = ospitality; }
+
+    public boolean isFood() {
+        return food;
+    }
+
+    public void setFood(boolean food) {
+        this.food = food;
+    }
+
+    public boolean isLocation() {
+        return location;
+    }
+
+    public void setLocation(boolean location) {
+        this.location = location;
+    }
 }

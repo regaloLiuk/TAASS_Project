@@ -52,7 +52,7 @@ public class CommentController {
                 haveUserDoneJourney=true;
         }
         if(!haveUserDoneJourney)
-            return new ResponseEntity("user not have done the journey", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("you don't have done the journey", HttpStatus.BAD_REQUEST);
 
         Comment comment = new Comment(user.get(), shelter.get());
 
@@ -64,6 +64,12 @@ public class CommentController {
 
         if (commentRequest.isOspitality())
             comment.setOspitality(true);
+
+        if (commentRequest.isFood())
+            comment.setFood(true);
+
+        if (commentRequest.isLocation())
+            comment.setLocation(true);
 
         commentRepository.save(comment);
         return new ResponseEntity("tanks for your valutation", HttpStatus.OK);
