@@ -16,13 +16,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/shelter")
 public class ShelterController {
     //find & get MOVED TO FindController
-    /*@Autowired
+    @Autowired
     ShelterRepository shelterRepository;
 
-    @Autowired
-    ReservationRepository reservationRepository;
+//    @Autowired
+//    ReservationRepository reservationRepository;
 
-    @GetMapping("/findAllShelter")
+    @GetMapping("/findAll")
+    public ResponseEntity getAllShelters(){
+        List<Shelter> shelterList=shelterRepository.findAll();
+        return new ResponseEntity(shelterList, HttpStatus.OK);
+    }
+
+
+    /*@GetMapping("/findAllShelter")
     public ResponseEntity getAllFreeShelter(){
         Set<Shelter> result = new HashSet<>();
         List<Shelter> sheltersNotReserved = shelterRepository.findAllSheltersReserved();
