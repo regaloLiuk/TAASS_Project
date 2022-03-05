@@ -5,6 +5,7 @@ import com.example.mountbook_backend.entity.Shelter;
 import com.example.mountbook_backend.entity.User;
 import com.example.mountbook_backend.payload.request.ReservationDeleteRequest;
 import com.example.mountbook_backend.payload.request.ReservationRequest;
+import com.example.mountbook_backend.payload.responce.ReservationResponse;
 import com.example.mountbook_backend.repository.ReservationRepository;
 import com.example.mountbook_backend.repository.ShelterRepository;
 import com.example.mountbook_backend.repository.UserRepository;
@@ -37,7 +38,7 @@ public class ReservationController implements Serializable {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty())
             return new ResponseEntity("invalid user", HttpStatus.BAD_REQUEST);
-        return new ResponseEntity(reservationRepository.findAllByUser(user.get()), HttpStatus.OK);
+        return new ResponseEntity(reservationRepository.findAllByUser(user.get().getId()), HttpStatus.OK);
     }
 
     @PostMapping("/doReservation")
@@ -76,12 +77,12 @@ public class ReservationController implements Serializable {
             return new ResponseEntity("invalid data: the shelter is closed for selected data", HttpStatus.BAD_REQUEST);
 
         //check that's, for the selected date, the rooms are not reserved yet
-        List<Reservation> reservationForShelter = reservationRepository.findReservationByDateAndShelter(reservationRequest.getFirstDay(),
+        List<ReservationResponse> reservationForShelter = reservationRepository.findReservationByDateAndShelter(reservationRequest.getFirstDay(),
                                                                                                         reservationRequest.getLastDay(),
                                                                                                         reservationRequest.getShelter());
         int bedCount = 0;
-        for (Reservation r  : reservationForShelter){
-            bedCount += r.getGuests();
+        for (ReservationResponse r  : reservationForShelter){
+            bedCount += r.getGuest();
         }
         if (bedCount+reservationRequest.getGuests() > shelter.get().getMaxNumBed())
             return new ResponseEntity("there's not enought space for reservation", HttpStatus.BAD_REQUEST);

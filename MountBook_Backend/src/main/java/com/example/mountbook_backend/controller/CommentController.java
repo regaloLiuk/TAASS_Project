@@ -2,6 +2,7 @@ package com.example.mountbook_backend.controller;
 
 import com.example.mountbook_backend.entity.*;
 import com.example.mountbook_backend.payload.request.CommentRequest;
+import com.example.mountbook_backend.payload.responce.ReservationResponse;
 import com.example.mountbook_backend.repository.CommentRepository;
 import com.example.mountbook_backend.repository.ReservationRepository;
 import com.example.mountbook_backend.repository.ShelterRepository;
@@ -44,11 +45,11 @@ public class CommentController {
             return new ResponseEntity("no users found", HttpStatus.BAD_REQUEST);
 
         //check if the user have done the journey
-        List<Reservation> userReservation = reservationRepository.findAllByUser(user.get());
+        List<ReservationResponse> userReservation = reservationRepository.findAllByUser(user.get().getId());
         boolean haveUserDoneJourney = false;
         //ITERATE ALL RESERVATION OF A USER
-        for (Reservation r : userReservation){
-            if (r.getShelter().getId() == commentRequest.getShelter())
+        for (ReservationResponse r : userReservation){
+            if (r.getShelterId() == commentRequest.getShelter())
                 haveUserDoneJourney=true;
         }
         if(!haveUserDoneJourney)

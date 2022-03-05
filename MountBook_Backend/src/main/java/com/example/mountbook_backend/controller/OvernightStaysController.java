@@ -41,6 +41,8 @@ public class OvernightStaysController {
         //take all the active request of a bivouac for a specific date
         List<OvernightStays> overnightRequest = overnightStaysRepository.findRequestFromDateAndBivouac(request.getFirstDay(), request.getLastDay(), bivouac.get().getId());
         if (!overnightRequest.isEmpty()) {
+            if(request.getGuests()<0)
+                return new ResponseEntity("for a correct request there must be at least 1 guest", HttpStatus.BAD_REQUEST);
             //in case of another request calculate if there is enough space for the current request
             int totalGuests = 0;
 
@@ -49,7 +51,7 @@ public class OvernightStaysController {
                 totalGuests = totalGuests + os.getGuest();
 
             if (totalGuests + request.getGuests() > bivouac.get().getBed())
-                return new ResponseEntity("we're sorry there's not enough space to satisfy yoou accomodation", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity("we're sorry there's not enough space to satisfy your accomodation", HttpStatus.BAD_REQUEST);
 
             //magari si può aggiunegere un pop-up per far confermare la richiesta
             overnightStaysRepository.save(new OvernightStays(bivouac.get(), user.get(), request.getGuests(), request.getFirstDay(), request.getLastDay()));

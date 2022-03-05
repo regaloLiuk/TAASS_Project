@@ -5,6 +5,7 @@ import com.example.mountbook_backend.entity.OvernightStays;
 import com.example.mountbook_backend.entity.Reservation;
 import com.example.mountbook_backend.entity.Shelter;
 import com.example.mountbook_backend.payload.request.UserFilterRequest;
+import com.example.mountbook_backend.payload.responce.ReservationResponse;
 import com.example.mountbook_backend.repository.BivouacRepository;
 import com.example.mountbook_backend.repository.OvernightStaysRepository;
 import com.example.mountbook_backend.repository.ReservationRepository;
@@ -32,7 +33,7 @@ public class FindController {
     OvernightStaysRepository overnightStaysRepository;
 
 //    @GetMapping("findStructure")
-    @PostMapping("findStructure")
+    @PostMapping("/findStructure")
     public ResponseEntity findStructure(@RequestBody UserFilterRequest request) {
 
         //search for shelter
@@ -53,10 +54,10 @@ public class FindController {
                     if (s.getOpen().before(request.getDateStart()) && s.getClose().after(request.getDateEnd())) {
                         int countBed = 0;
                         //get all reservation for single shelter
-                        List<Reservation> reservations = reservationRepository.findReservationByDateAndShelter(request.getDateStart(), request.getDateEnd(), s.getId());
+                        List<ReservationResponse> reservations = reservationRepository.findReservationByDateAndShelter(request.getDateStart(), request.getDateEnd(), s.getId());
                         //iterate the list and count the number of guest
-                        for (Reservation r : reservations) {
-                            countBed += r.getGuests();
+                        for (ReservationResponse r : reservations) {
+                            countBed += r.getGuest();
                         }
                         if (request.getGuest() > 0) { //add number of guest
                             if (countBed + request.getGuest() <= s.getMaxNumBed())
@@ -79,38 +80,37 @@ public class FindController {
                 shelterResult.retainAll(fitInPrice);
 
             //check for service
-            if (request.getWifi() || request.getCar() || request.getEquipment()) {
-                Set<Object> haveServices = new HashSet<>();
-                if (request.getWifi()) {
-                    for (Shelter s : shelterRepository.findShelterWithWifi())
-                        haveServices.add(s);
-                }
-
-                if (request.getCar()) {
-                    Set<Object> haveCar = new HashSet<>();
-                    for (Shelter s : shelterRepository.findShelterWithCar())
-                        haveCar.add(s);
-                    if (haveServices.isEmpty())
-                        haveServices = haveCar;
-                    else
-                        haveServices.retainAll(haveCar);
-                }
-
-                if (request.getEquipment()) {
-                    Set<Object> haveEquipment = new HashSet<>();
-                    for (Shelter s : shelterRepository.findShelterWithEquipment())
-                        haveEquipment.add(s);
-                    if (haveServices.isEmpty())
-                        haveServices = haveEquipment;
-                    else
-                        haveServices.retainAll(haveEquipment);
-                }
-                if (shelterResult.isEmpty())
-                    shelterResult.addAll(haveServices);
-                else
-                    shelterResult.retainAll(haveServices);
+            Set<Object> haveServices = new HashSet<>();
+            if (request.getWifi()!=null && request.getWifi()) {
+                for (Shelter s : shelterRepository.findShelterWithWifi())
+                    haveServices.add(s);
             }
+
+            if (request.getCar()!=null && request.getCar()) {
+                Set<Object> haveCar = new HashSet<>();
+                for (Shelter s : shelterRepository.findShelterWithCar())
+                    haveCar.add(s);
+                if (haveServices.isEmpty())
+                    haveServices = haveCar;
+                else
+                    haveServices.retainAll(haveCar);
+            }
+
+            if (request.getEquipment()!=null && request.getEquipment()) {
+                Set<Object> haveEquipment = new HashSet<>();
+                for (Shelter s : shelterRepository.findShelterWithEquipment())
+                    haveEquipment.add(s);
+                if (haveServices.isEmpty())
+                    haveServices = haveEquipment;
+                else
+                    haveServices.retainAll(haveEquipment);
+            }
+            if (shelterResult.isEmpty())
+                shelterResult.addAll(haveServices);
+            else
+                shelterResult.retainAll(haveServices);
         }
+
         //search for bivouac
         Set<Object> bivouacResult = new HashSet<>();
         if (request.getType() == 0 || request.getType() == 2) {
