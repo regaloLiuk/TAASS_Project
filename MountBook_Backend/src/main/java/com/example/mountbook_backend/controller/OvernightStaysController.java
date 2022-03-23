@@ -1,25 +1,12 @@
 package com.example.mountbook_backend.controller;
 
-import com.example.mountbook_backend.entity.Bivouac;
-import com.example.mountbook_backend.entity.OvernightStays;
-import com.example.mountbook_backend.entity.User;
-import com.example.mountbook_backend.payload.request.OvernightStayRequest;
-import com.example.mountbook_backend.repository.BivouacRepository;
-import com.example.mountbook_backend.repository.OvernightStaysRepository;
-import com.example.mountbook_backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
-import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/api/v1/OvernightStays")
 public class OvernightStaysController {
-
+/*
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -66,5 +53,5 @@ public class OvernightStaysController {
     public ResponseEntity removeOvernightStaySign(@RequestParam Long overnightId, Long userId) {
         overnightStaysRepository.deleteSign(overnightId, userId);
         return new ResponseEntity("your sign is correctly removed", HttpStatus.OK);
-    }
+    }*/
 }

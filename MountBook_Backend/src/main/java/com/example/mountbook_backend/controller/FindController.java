@@ -1,13 +1,11 @@
 package com.example.mountbook_backend.controller;
 
 import com.example.mountbook_backend.entity.Bivouac;
-import com.example.mountbook_backend.entity.OvernightStays;
 import com.example.mountbook_backend.entity.Reservation;
 import com.example.mountbook_backend.entity.Shelter;
 import com.example.mountbook_backend.payload.request.UserFilterRequest;
 import com.example.mountbook_backend.payload.responce.ReservationResponse;
 import com.example.mountbook_backend.repository.BivouacRepository;
-import com.example.mountbook_backend.repository.OvernightStaysRepository;
 import com.example.mountbook_backend.repository.ReservationRepository;
 import com.example.mountbook_backend.repository.ShelterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +27,8 @@ public class FindController {
     ReservationRepository reservationRepository;
     @Autowired
     BivouacRepository bivouacRepository;
-    @Autowired
-    OvernightStaysRepository overnightStaysRepository;
 
-//    @GetMapping("findStructure")
+//  @GetMapping("findStructure")
     @PostMapping("/findStructure")
     public ResponseEntity findStructure(@RequestBody UserFilterRequest request) {
 
@@ -123,16 +119,16 @@ public class FindController {
                         bivouacResult.add(b);
                 }
                 //get all remaining bivouac with a request for selected date
-                List<Bivouac> bivouacsWithtRequest = bivouacRepository.findWithRequestForDate(request.getDateStart(), request.getDateEnd());
+                List<Bivouac> bivouacsWithRequest = bivouacRepository.findWithRequestForDate(request.getDateStart(), request.getDateEnd());
                 //iterate the list and check if the bivouac can ospitate the guest
-                for (Bivouac b : bivouacsWithoutRequest) {
+                for (Bivouac b : bivouacsWithRequest) {
                     if (b.isOpen()) {
                         int countBed = 0;
                         //get all request for single shelter
-                        List<OvernightStays> overnightStaysRequest = overnightStaysRepository.findRequestFromDateAndBivouac(request.getDateStart(), request.getDateEnd(), b.getId());
+                        List<ReservationResponse> reservations = reservationRepository.findReservationByDateAndBivouac(request.getDateStart(), request.getDateEnd(), b.getId());
                         //iterate the list and count the number of guest
-                        for (OvernightStays os : overnightStaysRequest)
-                            countBed += os.getGuest();
+                        for (ReservationResponse r : reservations)
+                            countBed += r.getGuest();
                         if (request.getGuest() > 0) { //add number of guest
                             if (countBed + request.getGuest() <= b.getBed())
                                 shelterResult.add(b);

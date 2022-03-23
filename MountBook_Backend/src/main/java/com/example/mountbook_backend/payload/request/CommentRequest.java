@@ -10,9 +10,9 @@ public class CommentRequest {
     @NotEmpty
     private Long user;
 
-    @NotNull
-    @NotEmpty
     private Long shelter;
+
+    private Long bivouac;
 
     @NotBlank
     @NotNull
@@ -50,6 +50,14 @@ public class CommentRequest {
 
     public void setShelter(Long shelter) {
         this.shelter = shelter;
+    }
+
+    public Long getBivouac() {
+        return bivouac;
+    }
+
+    public void setBivouac(Long bivouac) {
+        this.bivouac = bivouac;
     }
 
     public boolean isService() {

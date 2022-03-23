@@ -1,36 +1,39 @@
 package com.example.mountbook_backend.controller;
 
-import com.example.mountbook_backend.entity.ERole;
-import com.example.mountbook_backend.entity.Role;
 import com.example.mountbook_backend.entity.User;
-import com.example.mountbook_backend.payload.request.LoginRequest;
-import com.example.mountbook_backend.payload.request.SignupRequest;
 import com.example.mountbook_backend.payload.responce.MessageResponse;
+import com.example.mountbook_backend.payload.responce.UserHistoryResponse;
+import com.example.mountbook_backend.payload.responce.UserMinimalResponse;
+import com.example.mountbook_backend.repository.CommentRepository;
+import com.example.mountbook_backend.repository.ReservationRepository;
 import com.example.mountbook_backend.repository.RoleRepository;
 import com.example.mountbook_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/user")
-public class UserController{
+public class UserController {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -99,7 +102,7 @@ public class UserController{
 
     //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     @PostMapping("/changePassword")
-    public ResponseEntity changePassword(@RequestParam String username, @RequestParam String oldPassword, @RequestParam String newPassword){
+    public ResponseEntity changePassword(@RequestParam String username, @RequestParam String oldPassword, @RequestParam String newPassword) {
 
         Optional<User> user = userRepository.findByUsername(username);
         if (!user.isPresent())
@@ -110,12 +113,22 @@ public class UserController{
         if (!authentication.isAuthenticated())
             return ResponseEntity.badRequest().body(new MessageResponse("user must be authenticated to change password"));
 
-        if (!encoder.matches(oldPassword,user.get().getPassword()))
+        if (!encoder.matches(oldPassword, user.get().getPassword()))
             return new ResponseEntity("the password provided is incorrect", HttpStatus.BAD_REQUEST);
         if (oldPassword.equals(newPassword))
             return new ResponseEntity("the new password must be different from the old one", HttpStatus.BAD_REQUEST);
 
-        userRepository.updatePassword(user.get().getEmail(),encoder.encode(newPassword));
+        userRepository.updatePassword(user.get().getEmail(), encoder.encode(newPassword));
         return new ResponseEntity<String>("password changed successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/getUserHistory")
+    public ResponseEntity changePassword(@RequestParam Long userId) {
+        Optional<UserMinimalResponse> user = userRepository.findUserById(userId);
+        if (!user.isPresent())
+            return new ResponseEntity("no user found for id: " + userId, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(new UserHistoryResponse(user.get(),
+                                    reservationRepository.findAllReservationByUser(user.get().getId()),
+                                    commentRepository.findAllByUser(user.get().getId())), HttpStatus.OK);
     }
 }

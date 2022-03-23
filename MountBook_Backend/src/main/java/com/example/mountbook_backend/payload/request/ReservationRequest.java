@@ -1,18 +1,27 @@
 package com.example.mountbook_backend.payload.request;
 
-import com.sun.istack.NotNull;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 import java.util.List;
 
 public class ReservationRequest {
+
+    @NotNull
+    @NotEmpty
     private Long user;
     private Long shelter;
-//    private int stayType;   // 0 -> null | 1 -> half board | 2 -> full board
+    private Long bivouac;
+    @NotNull
+    @NotEmpty
     private int guests;
+    @NotNull
+    @NotEmpty
     private Date firstDay;
+    @NotNull
+    @NotEmpty
     private Date lastDay;
 
     public Long getUser() {
@@ -25,6 +34,14 @@ public class ReservationRequest {
 
     public Long getShelter() {
         return shelter;
+    }
+
+    public Long getBivouac() {
+        return bivouac;
+    }
+
+    public void setBivouac(Long bivouac) {
+        this.bivouac = bivouac;
     }
 
     public void setShelter(Long shelter) {

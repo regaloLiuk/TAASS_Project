@@ -20,18 +20,18 @@ public interface BivouacRepository extends JpaRepository<Bivouac,Long>{
 
     public Optional<Bivouac> findByName(String name);
 
-    @Query(value = "SELECT DISTINCT b FROM Bivouac b WHERE b.id NOT IN (SELECT os.bivouac.id FROM OvernightStays os)")
+    @Query(value = "SELECT DISTINCT b FROM Bivouac b WHERE b.id NOT IN (SELECT os.bivouac.id FROM Reservation os)")
     public List<Bivouac> findAllWithoutRequest();
 
-    @Query(value = "SELECT DISTINCT b FROM Bivouac b WHERE b.id IN (SELECT os.bivouac.id FROM OvernightStays os)")
+    @Query(value = "SELECT DISTINCT b FROM Bivouac b WHERE b.id IN (SELECT os.bivouac.id FROM Reservation os)")
     public List<Bivouac> findAllWithRequest();
 
     @Query(value =  "SELECT DISTINCT b FROM Bivouac b WHERE b.id NOT IN (" +
-                    "   SELECT b1 FROM Bivouac b1 JOIN OvernightStays os ON (b1.id=os.bivouac.id) WHERE os.firstDay<=:date_start AND os.lastDay>=:date_end)")
+                    "   SELECT b1 FROM Bivouac b1 JOIN Reservation os ON (b1.id=os.bivouac.id) WHERE os.firstDay<=:date_start AND os.lastDay>=:date_end)")
     public List<Bivouac> findWithoutRequestForDate(@Param("date_start") Date dateStart, @Param("date_end") Date dateEnd);
 
     @Query(value =  "SELECT DISTINCT b FROM Bivouac b WHERE b.id IN (" +
-            "   SELECT b1 FROM Bivouac b1 JOIN OvernightStays os ON (b1.id=os.bivouac.id) WHERE os.firstDay<=:date_start AND os.lastDay>=:date_end)")
+            "   SELECT b1 FROM Bivouac b1 JOIN Reservation os ON (b1.id=os.bivouac.id) WHERE os.firstDay<=:date_start AND os.lastDay>=:date_end)")
     public List<Bivouac> findWithRequestForDate(@Param("date_start") Date dateStart, @Param("date_end") Date dateEnd);
 
     @Modifying

@@ -6,20 +6,22 @@ public class ReservationResponse {
 
     private Long reservationId;
     private Long shelterId;
+    private Long bivouacId;
     private Long userId;
     private int guest;
-    private Date firtsDay;
+    private Date firstDay;
     private Date lastDay;
 
     public ReservationResponse() {
     }
 
-    public ReservationResponse(Long reservationId, Long shelterId, Long userId, int guest, Date firtsDay, Date lastDay) {
+    public ReservationResponse(Long reservationId, Long shelterId, Long bivouacId, Long userId, int guest, Date firstDay, Date lastDay) {
         this.reservationId = reservationId;
         this.shelterId = shelterId;
+        this.bivouacId = bivouacId;
         this.userId = userId;
         this.guest = guest;
-        this.firtsDay = firtsDay;
+        this.firstDay = firstDay;
         this.lastDay = lastDay;
     }
 
@@ -39,6 +41,14 @@ public class ReservationResponse {
         this.shelterId = shelterId;
     }
 
+    public Long getBivouacId() {
+        return bivouacId;
+    }
+
+    public void setBivouacId(Long bivouacId) {
+        this.bivouacId = bivouacId;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -55,12 +65,12 @@ public class ReservationResponse {
         this.guest = guest;
     }
 
-    public Date getFirtsDay() {
-        return firtsDay;
+    public Date getFirstDay() {
+        return firstDay;
     }
 
-    public void setFirtsDay(Date firtsDay) {
-        this.firtsDay = firtsDay;
+    public void setFirstDay(Date firstDay) {
+        this.firstDay = firstDay;
     }
 
     public Date getLastDay() {

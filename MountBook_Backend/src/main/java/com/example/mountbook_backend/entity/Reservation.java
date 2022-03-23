@@ -15,8 +15,11 @@ public class Reservation implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Shelter shelter;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Bivouac bivouac;
 
     @Column(nullable = false)
     private int guests;
@@ -32,6 +35,14 @@ public class Reservation implements Serializable {
     public Reservation(User user, Shelter shelter, int guests, Date firstDay, Date lastDay) {
         this.user = user;
         this.shelter = shelter;
+        this.guests = guests;
+        this.firstDay = firstDay;
+        this.lastDay = lastDay;
+    }
+
+    public Reservation(User user, Bivouac bivouac, int guests, Date firstDay, Date lastDay) {
+        this.user = user;
+        this.bivouac = bivouac;
         this.guests = guests;
         this.firstDay = firstDay;
         this.lastDay = lastDay;
@@ -55,6 +66,14 @@ public class Reservation implements Serializable {
 
     public void setShelter(Shelter shelter) {
         this.shelter = shelter;
+    }
+
+    public Bivouac getBivouac() {
+        return bivouac;
+    }
+
+    public void setBivouac(Bivouac bivouac) {
+        this.bivouac = bivouac;
     }
 
     public int getGuests() {
