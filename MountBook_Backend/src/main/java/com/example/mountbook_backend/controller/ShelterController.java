@@ -28,6 +28,12 @@ public class ShelterController {
         return new ResponseEntity(shelterList, HttpStatus.OK);
     }
 
+    @GetMapping("/findById")
+    public ResponseEntity getShelterById(@RequestParam Long shId){
+        Optional<Shelter> shelter=shelterRepository.findById(shId);
+        return new ResponseEntity(shelter, HttpStatus.OK);
+    }
+
 
     /*@GetMapping("/findAllShelter")
     public ResponseEntity getAllFreeShelter(){

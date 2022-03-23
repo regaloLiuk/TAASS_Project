@@ -11,11 +11,12 @@ public class ReservationResponse {
     private int guest;
     private Date firstDay;
     private Date lastDay;
+    private String name;
 
     public ReservationResponse() {
     }
 
-    public ReservationResponse(Long reservationId, Long shelterId, Long bivouacId, Long userId, int guest, Date firstDay, Date lastDay) {
+    public ReservationResponse(Long reservationId, Long shelterId, Long bivouacId, Long userId, int guest, Date firstDay, Date lastDay, String name) {
         this.reservationId = reservationId;
         this.shelterId = shelterId;
         this.bivouacId = bivouacId;
@@ -23,6 +24,7 @@ public class ReservationResponse {
         this.guest = guest;
         this.firstDay = firstDay;
         this.lastDay = lastDay;
+        this.name=name;
     }
 
     public Long getReservationId() {
@@ -80,4 +82,8 @@ public class ReservationResponse {
     public void setLastDay(Date lastDay) {
         this.lastDay = lastDay;
     }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 }
