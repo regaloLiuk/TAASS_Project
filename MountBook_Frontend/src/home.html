@@ -72,11 +72,8 @@
 
 
             </nav>
-<<<<<<< HEAD
             <div style="background-color: #66ff66; height: 20% ; position: absolute; top: 5;  left: 0; width: 100%; z-index: -1"></div>
-=======
             <div style="background-color: #66ff66; height: 20% ; position: absolute; top:5;  left: 0; width: 100%;"></div>
->>>>>>> 36f65f6538bef661d3c07c9bef46b725c25bf2a1
             
             <div id="home-div" v-show="seen_home" > <!--Div contenuto home della pagina-->
                 <!--Carousel home page-->
@@ -343,7 +340,7 @@
                                 <td  v-if="jsn_storico_dummy[i].type==1"  style="text-align: left;" ><strong><U>Luogo:</U></strong> {{jsn_storico_dummy[i].nome}}<br><strong><U>Tipo:</U></strong> Bivacco<strong><br><U>Posti:</U></strong> {{jsn_storico_dummy[i].posti}}<br> <div v-if="jsn_storico_dummy[i].type==0"><strong><U>Totale:</U></strong> {{jsn_storico_dummy[i].totale}}<i class="bi bi-currency-euro"></i><br> <strong><U>Soggiorno:</U></strong> {{jsn_storico_dummy[i].soggiorno}} <br></div><strong><U>Periodo:</U></strong> {{jsn_storico_dummy[i].periodo}}</td>
                                 
                                 <!--Elimina prenotazione-->
-                                <td v-if="jsn_storico_dummy[i].voted==0"> <button type="button" class="btn btn-warning" @click="eliminaPrenotazione(i,jsn_storico_dummy[i].user_id,jsn_storico_dummy[i].id)"><i class="bi bi-calendar-x-fill"></i>Cancella</button></td>
+                                <td v-if="jsn_storico_dummy[i].voted==0"> <button type="button" class="btn btn-warning" @click="eliminaPrenotazione(i,jsn_storico_dummy[i].userId,jsn_storico_dummy[i].reservationId)"><i class="bi bi-calendar-x-fill"></i>Cancella</button></td>
 
                                 <!--Struttura da votare categorie AGGIORNARE LE FUNZIONI PER LE CATEGORIE SPECIFICHE-->
                                 <td v-if="jsn_storico_dummy[i].voted==0"> <button type="button" class="btn btn-success" @click="vota(i)" ><i class="bi bi-star"></i>Vota</button></td>
