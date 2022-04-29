@@ -88,12 +88,16 @@ function reserve(){
 }
 
 function getStorico(){
-    /*$.post("url","json_body",
+
+
+    $.get(url+"/api/v1/user/getUserHistory?userId=1",
     function(data, status){
        console.log(data);
+       app.jsn_storico_dummy = JSON.parse(data);
     });
-    app.jsn_storico_dummy = JSON.parse(data);
-    */
+
+   
+    
 }
 
 
@@ -336,8 +340,9 @@ var app = new Vue({
             app.seen_story=true;
 
             //Effettuare chiamata ajax per recupero storico
-            app.jsn_storico_dummy = JSON.parse("[{\"type\":\"0\",\"vote\":\"0\",\"voted\":\"0\",\"id\":\"0\",\"periodo\":\"12-12-2021 16-12-2021\",\"soggiorno\":\"Mezza pensione\",\"totale\":\"150\",\"posti\":\"4\",\"nome\":\"Selleries\",\"img\":\"https://www.rusconiarredamenti.it/img/545/arredamento-casa-letti-link-bside_oit_1128334.webp\"},{\"type\":\"1\",\"vote\":\"1\",\"voted\":\"1\",\"id\":\"1\",\"periodo\":\"09-12-2021 12-12-2021\",\"soggiorno\":\"Nessuno\",\"totale\":\"234\",\"posti\":\"2\",\"nome\":\"Ca D'Asti\",\"img\":\"https://www.rusconiarredamenti.it/img/545/arredamento-casa-letti-maronese-acf-vela_oit_1157661.webp\"},{\"type\":\"1\",\"vote\":\"0\",\"voted\":\"0\",\"id\":\"3\",\"periodo\":\"07-12-2021 08-12-2021\",\"posti\":\"2\",\"nome\":\"Bivacco 345\",\"img\":\"https://www.montagnaestate.it/wp-content/uploads/baita-di-montagna-in-val-gardena.jpg\"}]");
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
+           // app.jsn_storico_dummy = JSON.parse("[{\"type\":\"0\",\"vote\":\"0\",\"voted\":\"0\",\"id\":\"0\",\"periodo\":\"12-12-2021 16-12-2021\",\"soggiorno\":\"Mezza pensione\",\"totale\":\"150\",\"posti\":\"4\",\"nome\":\"Selleries\",\"img\":\"https://www.rusconiarredamenti.it/img/545/arredamento-casa-letti-link-bside_oit_1128334.webp\"},{\"type\":\"1\",\"vote\":\"1\",\"voted\":\"1\",\"id\":\"1\",\"periodo\":\"09-12-2021 12-12-2021\",\"soggiorno\":\"Nessuno\",\"totale\":\"234\",\"posti\":\"2\",\"nome\":\"Ca D'Asti\",\"img\":\"https://www.rusconiarredamenti.it/img/545/arredamento-casa-letti-maronese-acf-vela_oit_1157661.webp\"},{\"type\":\"1\",\"vote\":\"0\",\"voted\":\"0\",\"id\":\"3\",\"periodo\":\"07-12-2021 08-12-2021\",\"posti\":\"2\",\"nome\":\"Bivacco 345\",\"img\":\"https://www.montagnaestate.it/wp-content/uploads/baita-di-montagna-in-val-gardena.jpg\"}]");
+           getStorico(); 
+           document.body.scrollTop = document.documentElement.scrollTop = 0;
 
 
         },
@@ -439,7 +444,10 @@ var app = new Vue({
         },
 
         // Funzioni per valutazione struttura ---------
-        vota: function(index){
+        vota: function(index){ // Modificare id prenotazione per recupero dati
+            
+            //app.jsn_storico_dummy[index]  CONTIENE INFO PRENOTAZIONE PER VOTO
+
             console.log("Indice "+index);
             console.log("ser"+index)
             var servizio;
@@ -481,13 +489,16 @@ var app = new Vue({
 
             //-- RECUPERARE ID UTENTE E SHELTER
             var tmp_json =JSON.stringify({
+                "id":1,
                 "user":1,
                 "shelter":1,
                 "service":servizio,
                 "clear": pulizia,
                 "ospitality": ospitalita,
                 "food": cucina,
-                "location": location
+                "location": location,
+                "bivouac": null
+   
             })
 
            
@@ -497,13 +508,11 @@ var app = new Vue({
                     console.log(data);
                     console.log(status)
             });*/
-            $.post({
-                url: url+comment+"doComment",
-                data: tmp_json,
-                contentType: 'application/json; charset=utf-8'
-            })
-                .done(function (response) {
-                    console.log(response);
+
+
+            $.post(url+comment+"doComment",tmp_json,
+                function(data, status){
+                    getStorico();
                 });
 
 
@@ -521,7 +530,7 @@ var app = new Vue({
             
             var tmp_json = JSON.stringify({"userId":id_user,"reservationId":id})
 
-            $.ajax({
+           /* $.ajax({
                 method: "POST",
                 url: url+reservation+"deleteReservation",
                 async:true,
@@ -529,9 +538,18 @@ var app = new Vue({
                 crossDomain: true,
                 contentType: "application/json",
                 success: function(result) {
-                    app.jsn_list_dummy = JSON.parse(result);
+                    app.jsn_storico_dummy = JSON.parse(result);
+                    getStorico();
                 }
+            });*/
+
+            $.get(url+reservation+"deleteReservation",tmp_json,
+                function(data, status){
+                    app.jsn_storico_dummy = JSON.parse(result);
+                    getStorico();
             });
+
+           
         },
 
         confermaPrenotazione: function(index){
