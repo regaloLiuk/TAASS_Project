@@ -1,9 +1,7 @@
 package com.example.mountbook_backend.controller;
 
 import com.example.mountbook_backend.entity.User;
-import com.example.mountbook_backend.payload.responce.MessageResponse;
-import com.example.mountbook_backend.payload.responce.UserHistoryResponse;
-import com.example.mountbook_backend.payload.responce.UserMinimalResponse;
+import com.example.mountbook_backend.payload.responce.*;
 import com.example.mountbook_backend.repository.CommentRepository;
 import com.example.mountbook_backend.repository.ReservationRepository;
 import com.example.mountbook_backend.repository.RoleRepository;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@CrossOrigin(origins = "", allowedHeaders = "")
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
@@ -127,8 +126,24 @@ public class UserController {
         Optional<UserMinimalResponse> user = userRepository.findUserById(userId);
         if (!user.isPresent())
             return new ResponseEntity("no user found for id: " + userId, HttpStatus.NOT_FOUND);
-        return new ResponseEntity(new UserHistoryResponse(user.get(),
-                                    reservationRepository.findAllReservationByUser(user.get().getId()),
-                                    commentRepository.findAllByUser(user.get().getId())), HttpStatus.OK);
+
+        //take the list of reservation of user
+        List<ReservationResponse> reservations = reservationRepository.findAllReservationByUser(user.get().getId());    //problema: tira fuori solamente le prenotazioni di rifugi, non quelle di bivacchi
+        //iterate the over the reservations and take the comment of shelter or bivouac
+        for (ReservationResponse r : reservations){
+            Optional <CommentResponse> c;
+            if (r.getBivouacId()!=null) {
+                c = commentRepository.findAllByUserAndBivouac(user.get().getId(), r.getBivouacId());
+                if (c.isPresent())
+                    r.setComments(c.get());
+            }
+            if (r.getShelterId()!=null){
+                c = commentRepository.findAllByUserAndShelter(user.get().getId(), r.getShelterId());
+                if (c.isPresent())
+                    r.setComments(c.get());
+            }
+
+        }
+        return new ResponseEntity(new UserHistoryResponse(user.get(), reservations), HttpStatus.OK);
     }
 }

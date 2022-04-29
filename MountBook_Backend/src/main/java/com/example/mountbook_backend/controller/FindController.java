@@ -1,7 +1,6 @@
 package com.example.mountbook_backend.controller;
 
 import com.example.mountbook_backend.entity.Bivouac;
-import com.example.mountbook_backend.entity.Reservation;
 import com.example.mountbook_backend.entity.Shelter;
 import com.example.mountbook_backend.payload.request.UserFilterRequest;
 import com.example.mountbook_backend.payload.responce.ReservationResponse;
@@ -17,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@CrossOrigin(origins = "", allowedHeaders = "")
 @RestController
 @RequestMapping("/api/v1/find")
 public class FindController {

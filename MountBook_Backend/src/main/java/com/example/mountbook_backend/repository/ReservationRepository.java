@@ -1,7 +1,6 @@
 package com.example.mountbook_backend.repository;
 
 import com.example.mountbook_backend.entity.Reservation;
-import com.example.mountbook_backend.entity.User;
 import com.example.mountbook_backend.payload.responce.ReservationResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +16,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     Optional<Reservation> findById(Long reservation);
 
-    @Query(value = "SELECT new com.example.mountbook_backend.payload.responce.ReservationResponse(r.id,r.shelter.id, r.bivouac.id, r.user.id, r.guests, r.firstDay, r.lastDay, r.shelter.name) FROM Reservation r WHERE r.user.id=:user_id")
+    @Query(value = "SELECT new com.example.mountbook_backend.payload.responce.ReservationResponse(r.id, r.shelter.id, r.bivouac.id, r.user.id, r.guests, r.firstDay, r.lastDay, r.shelter.name) FROM Reservation r WHERE r.user.id=:user_id")
     List<ReservationResponse> findAllReservationByUser(@Param("user_id") Long userId);
 
     @Query(value = "SELECT new com.example.mountbook_backend.payload.responce.ReservationResponse(r.id,r.shelter.id, r.bivouac.id, r.user.id, r.guests, r.firstDay, r.lastDay, r.shelter.name) FROM Reservation r WHERE (r.firstDay<=:first_day OR r.lastDay>=:last_day)")

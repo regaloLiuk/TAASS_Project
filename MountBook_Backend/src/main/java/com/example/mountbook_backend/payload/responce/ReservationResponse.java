@@ -1,6 +1,7 @@
 package com.example.mountbook_backend.payload.responce;
 
 import java.util.Date;
+import java.util.List;
 
 public class ReservationResponse {
 
@@ -12,6 +13,7 @@ public class ReservationResponse {
     private Date firstDay;
     private Date lastDay;
     private String name;
+    private CommentResponse comments;
 
     public ReservationResponse() {
     }
@@ -86,4 +88,12 @@ public class ReservationResponse {
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
+
+    public CommentResponse getComments() {
+        return comments;
+    }
+
+    public void setComments(CommentResponse comments) {
+        this.comments = comments;
+    }
 }

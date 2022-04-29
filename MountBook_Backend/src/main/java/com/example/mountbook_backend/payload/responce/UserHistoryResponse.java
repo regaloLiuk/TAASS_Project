@@ -6,12 +6,10 @@ public class UserHistoryResponse {
 
     private UserMinimalResponse user;
     private List<ReservationResponse> reservations;
-    private List<CommentResponse> comments;
 
-    public UserHistoryResponse(UserMinimalResponse user, List<ReservationResponse> reservations, List<CommentResponse> comments) {
+    public UserHistoryResponse(UserMinimalResponse user, List<ReservationResponse> reservations) {
         this.user = user;
         this.reservations = reservations;
-        this.comments = comments;
     }
 
     public UserMinimalResponse getUserId() {
@@ -30,11 +28,4 @@ public class UserHistoryResponse {
         this.reservations = reservations;
     }
 
-    public List<CommentResponse> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentResponse> comments) {
-        this.comments = comments;
-    }
 }
