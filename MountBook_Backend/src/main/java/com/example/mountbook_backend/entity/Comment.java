@@ -13,10 +13,7 @@ public class Comment implements Serializable {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private Shelter shelter;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private Bivouac bivouac;
+    private Structure structure;
 
     // true -> positive | false -> negative
     private boolean service;
@@ -32,8 +29,7 @@ public class Comment implements Serializable {
 
     public Comment(User user) {
         this.user = user;
-        this.shelter = null;
-        this.bivouac = null;
+        this.structure = null;
         this.clear=false;
         this.service=false;
         this.ospitality=false;
@@ -53,20 +49,12 @@ public class Comment implements Serializable {
         this.user = user;
     }
 
-    public Shelter getShelter() {
-        return shelter;
+    public Structure getShelter() {
+        return structure;
     }
 
-    public void setShelter(Shelter shelter) {
-        this.shelter = shelter;
-    }
-
-    public Bivouac getBivouac() {
-        return bivouac;
-    }
-
-    public void setBivouac(Bivouac bivouac) {
-        this.bivouac = bivouac;
+    public void setShelter(Structure structure) {
+        this.structure = structure;
     }
 
     public boolean isService() {

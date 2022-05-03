@@ -10,7 +10,7 @@ public class Service implements Serializable {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private Shelter shelter;
+    private Structure structure;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT false")
     private boolean wifi;
@@ -23,20 +23,20 @@ public class Service implements Serializable {
 
     public Service() {}
 
-    public Service(Shelter shelter) {
-        this.shelter = shelter;
+    public Service(Structure structure) {
+        this.structure = structure;
     }
 
     public Long getId() {
         return id;
     }
 
-    public Shelter getShelter() {
-        return shelter;
+    public Structure getShelter() {
+        return structure;
     }
 
-    public void setShelter(Shelter shelter) {
-        this.shelter = shelter;
+    public void setShelter(Structure structure) {
+        this.structure = structure;
     }
 
     public boolean isWifi() {

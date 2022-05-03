@@ -23,6 +23,6 @@ public class Outing implements Serializable {
     @JoinTable(name = "shelter_outings",
             joinColumns = @JoinColumn(name = "outing_id", referencedColumnName = "id", nullable = true),
             inverseJoinColumns = @JoinColumn(name = "shelter_id", referencedColumnName = "id", nullable = true))
-    private List<Shelter> nearShelters;
+    private List<Structure> nearStructures;
 
 }

@@ -1,20 +1,16 @@
 package com.example.mountbook_backend.controller;
 
-import com.example.mountbook_backend.entity.Bivouac;
-import com.example.mountbook_backend.entity.Shelter;
+import com.example.mountbook_backend.entity.Structure;
 import com.example.mountbook_backend.payload.request.UserFilterRequest;
 import com.example.mountbook_backend.payload.responce.ReservationResponse;
-import com.example.mountbook_backend.repository.BivouacRepository;
 import com.example.mountbook_backend.repository.ReservationRepository;
-import com.example.mountbook_backend.repository.ShelterRepository;
+import com.example.mountbook_backend.repository.StructureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "", allowedHeaders = "")
 @RestController
@@ -22,35 +18,37 @@ import java.util.Set;
 public class FindController {
 
     @Autowired
-    ShelterRepository shelterRepository;
+    StructureRepository structureRepository;
     @Autowired
     ReservationRepository reservationRepository;
-    @Autowired
-    BivouacRepository bivouacRepository;
 
-//  @GetMapping("findStructure")
+    @GetMapping("findAllStructure")
+    public ResponseEntity findAllStructure(){
+        List<Object> shelterList= Collections.singletonList(structureRepository.findAll());
+        return new ResponseEntity(shelterList.get(0), HttpStatus.OK);
+    }
+
     @PostMapping("/findStructure")
     public ResponseEntity findStructure(@RequestBody UserFilterRequest request) {
-
         //search for shelter
         Set<Object> shelterResult = new HashSet<>();
         if (request.getType() == 0 || request.getType() == 1) {
             //check for date
             if (request.getDateStart() != null && request.getDateEnd() != null) {
                 //get all shelter not reserved for selected date
-                List<Shelter> sheltersNotReserved = shelterRepository.findSheltersNotReservedByDate(request.getDateStart(), request.getDateEnd());
-                for (Shelter s : sheltersNotReserved) {
+                List<Structure> sheltersNotReserved = structureRepository.findSheltersNotReservedByDate(request.getDateStart(), request.getDateEnd(),0);
+                for (Structure s : sheltersNotReserved) {
                     if (s.getOpen().before(request.getDateStart()) && s.getClose().after(request.getDateEnd()))
                         shelterResult.add(s);
                 }
                 //get all remaining shelter with a reservation for selected date
-                List<Shelter> sheltersReserved = shelterRepository.findSheltersReservedByDate(request.getDateStart(), request.getDateEnd());
+                List<Structure> sheltersReserved = structureRepository.findSheltersReservedByDate(request.getDateStart(), request.getDateEnd(),0);
                 //iterate the list and check if the shelters can ospitate the guest
-                for (Shelter s : sheltersReserved) {
+                for (Structure s : sheltersReserved) {
                     if (s.getOpen().before(request.getDateStart()) && s.getClose().after(request.getDateEnd())) {
                         int countBed = 0;
                         //get all reservation for single shelter
-                        List<ReservationResponse> reservations = reservationRepository.findReservationByDateAndShelter(request.getDateStart(), request.getDateEnd(), s.getId());
+                        List<ReservationResponse> reservations = reservationRepository.findReservationByDateAndStructure(request.getDateStart(), request.getDateEnd(), s.getId());
                         //iterate the list and count the number of guest
                         for (ReservationResponse r : reservations) {
                             countBed += r.getGuest();
@@ -66,8 +64,8 @@ public class FindController {
             //check for price
             Set<Object> fitInPrice = new HashSet<>();
             if (request.getMinPrice() >= 0 && request.getMaxPrice() >= 0) {
-                List<Shelter> s1 = shelterRepository.findShelterByPrice(request.getMinPrice(), request.getMaxPrice());
-                for (Shelter s : s1)
+                List<Structure> s1 = structureRepository.findShelterByPrice(request.getMinPrice(), request.getMaxPrice(),0);
+                for (Structure s : s1)
                     fitInPrice.add(s);
             }
             if (shelterResult.isEmpty())
@@ -78,13 +76,13 @@ public class FindController {
             //check for service
             Set<Object> haveServices = new HashSet<>();
             if (request.getWifi()!=null && request.getWifi()) {
-                for (Shelter s : shelterRepository.findShelterWithWifi())
+                for (Structure s : structureRepository.findShelterWithWifi())
                     haveServices.add(s);
             }
 
             if (request.getCar()!=null && request.getCar()) {
                 Set<Object> haveCar = new HashSet<>();
-                for (Shelter s : shelterRepository.findShelterWithCar())
+                for (Structure s : structureRepository.findShelterWithCar())
                     haveCar.add(s);
                 if (haveServices.isEmpty())
                     haveServices = haveCar;
@@ -94,7 +92,7 @@ public class FindController {
 
             if (request.getEquipment()!=null && request.getEquipment()) {
                 Set<Object> haveEquipment = new HashSet<>();
-                for (Shelter s : shelterRepository.findShelterWithEquipment())
+                for (Structure s : structureRepository.findShelterWithEquipment())
                     haveEquipment.add(s);
                 if (haveServices.isEmpty())
                     haveServices = haveEquipment;
@@ -103,8 +101,8 @@ public class FindController {
             }
             if (shelterResult.isEmpty())
                 shelterResult.addAll(haveServices);
-            else
-                shelterResult.retainAll(haveServices);
+//            else
+//                shelterResult.retainAll(haveServices);
         }
 
         //search for bivouac
@@ -113,25 +111,25 @@ public class FindController {
             //check for date
             if (request.getDateStart() != null && request.getDateEnd() != null) {
                 //get all bivouac without request for selected date
-                List<Bivouac> bivouacsWithoutRequest = bivouacRepository.findWithoutRequestForDate(request.getDateStart(), request.getDateEnd());
-                for (Bivouac b : bivouacsWithoutRequest) {
-                    if (b.isOpen())
-                        bivouacResult.add(b);
+                List<Structure> bivouacsWithoutRequest = structureRepository.findBivouacNotReservedByDate(request.getDateStart(), request.getDateEnd(),1);
+                for (Structure s : bivouacsWithoutRequest) {
+                    if (s.getOpen().before(request.getDateStart()) && s.getClose().after(request.getDateEnd()))
+                        bivouacResult.add(s);
                 }
                 //get all remaining bivouac with a request for selected date
-                List<Bivouac> bivouacsWithRequest = bivouacRepository.findWithRequestForDate(request.getDateStart(), request.getDateEnd());
+                List<Structure> bivouacsWithRequest = structureRepository.findBivouacsReservedByDate(request.getDateStart(), request.getDateEnd(),1);
                 //iterate the list and check if the bivouac can ospitate the guest
-                for (Bivouac b : bivouacsWithRequest) {
-                    if (b.isOpen()) {
+                for (Structure b : bivouacsWithRequest) {
+                    if (b.getOpen().before(request.getDateStart()) && b.getClose().after(request.getDateEnd())) {
                         int countBed = 0;
                         //get all request for single shelter
-                        List<ReservationResponse> reservations = reservationRepository.findReservationByDateAndBivouac(request.getDateStart(), request.getDateEnd(), b.getId());
+                        List<ReservationResponse> reservations = reservationRepository.findReservationByDateAndStructure(request.getDateStart(), request.getDateEnd(), b.getId());
                         //iterate the list and count the number of guest
                         for (ReservationResponse r : reservations)
                             countBed += r.getGuest();
                         if (request.getGuest() > 0) { //add number of guest
-                            if (countBed + request.getGuest() <= b.getBed())
-                                shelterResult.add(b);
+                            if (countBed + request.getGuest() <= b.getMaxNumBed())
+                                bivouacResult.add(b);
                         }
                         bivouacResult.add(b);
                     }

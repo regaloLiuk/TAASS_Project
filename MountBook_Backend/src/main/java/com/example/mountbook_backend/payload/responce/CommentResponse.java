@@ -3,8 +3,7 @@ package com.example.mountbook_backend.payload.responce;
 public class CommentResponse {
 
     private Long reservationId;
-    private Long shelterId;
-    private Long bivouacId;
+    private Long structureId;
     private Long userId;
     private boolean service;
     private boolean clear;
@@ -14,10 +13,9 @@ public class CommentResponse {
 
     public CommentResponse() {}
 
-    public CommentResponse(Long reservationId, Long shelterId, Long bivouacId, Long userId, boolean service, boolean clear, boolean ospitality, boolean food, boolean location) {
+    public CommentResponse(Long reservationId, Long structureId, Long userId, boolean service, boolean clear, boolean ospitality, boolean food, boolean location) {
         this.reservationId = reservationId;
-        this.shelterId = shelterId;
-        this.bivouacId = bivouacId;
+        this.structureId = structureId;
         this.userId = userId;
         this.service = service;
         this.clear = clear;
@@ -34,20 +32,12 @@ public class CommentResponse {
         this.reservationId = reservationId;
     }
 
-    public Long getShelterId() {
-        return shelterId;
+    public Long getStructureId() {
+        return structureId;
     }
 
-    public void setShelterId(Long shelterId) {
-        this.shelterId = shelterId;
-    }
-
-    public Long getBivouacId() {
-        return bivouacId;
-    }
-
-    public void setBivouacId(Long bivouacId) {
-        this.bivouacId = bivouacId;
+    public void setStructureId(Long structureId) {
+        this.structureId = structureId;
     }
 
     public Long getUserId() {

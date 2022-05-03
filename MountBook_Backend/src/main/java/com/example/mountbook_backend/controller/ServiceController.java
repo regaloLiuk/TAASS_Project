@@ -1,8 +1,8 @@
 package com.example.mountbook_backend.controller;
 
-import com.example.mountbook_backend.entity.Shelter;
+import com.example.mountbook_backend.entity.Structure;
 import com.example.mountbook_backend.repository.ServiceRepository;
-import com.example.mountbook_backend.repository.ShelterRepository;
+import com.example.mountbook_backend.repository.StructureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +19,11 @@ public class ServiceController {
     ServiceRepository serviceRepository;
 
     @Autowired
-    ShelterRepository shelterRepository;
+    StructureRepository structureRepository;
 
     @GetMapping("/getServicesForShelter")
     public ResponseEntity getServicesForShelter(@RequestParam Long shelterId){
-        Optional<Shelter> shelter=shelterRepository.findById(shelterId);
+        Optional<Structure> shelter= structureRepository.findById(shelterId);
         if(shelter.isEmpty()){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }else{

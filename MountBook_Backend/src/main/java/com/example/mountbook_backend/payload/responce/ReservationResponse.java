@@ -1,13 +1,11 @@
 package com.example.mountbook_backend.payload.responce;
 
 import java.util.Date;
-import java.util.List;
 
 public class ReservationResponse {
 
     private Long reservationId;
-    private Long shelterId;
-    private Long bivouacId;
+    private Long structureId;
     private Long userId;
     private int guest;
     private Date firstDay;
@@ -18,10 +16,9 @@ public class ReservationResponse {
     public ReservationResponse() {
     }
 
-    public ReservationResponse(Long reservationId, Long shelterId, Long bivouacId, Long userId, int guest, Date firstDay, Date lastDay, String name) {
+    public ReservationResponse(Long reservationId, Long structureId, Long userId, int guest, Date firstDay, Date lastDay, String name) {
         this.reservationId = reservationId;
-        this.shelterId = shelterId;
-        this.bivouacId = bivouacId;
+        this.structureId = structureId;
         this.userId = userId;
         this.guest = guest;
         this.firstDay = firstDay;
@@ -37,20 +34,12 @@ public class ReservationResponse {
         this.reservationId = reservationId;
     }
 
-    public Long getShelterId() {
-        return shelterId;
+    public Long getStructureId() {
+        return structureId;
     }
 
-    public void setShelterId(Long shelterId) {
-        this.shelterId = shelterId;
-    }
-
-    public Long getBivouacId() {
-        return bivouacId;
-    }
-
-    public void setBivouacId(Long bivouacId) {
-        this.bivouacId = bivouacId;
+    public void setStructureId(Long structureId) {
+        this.structureId = structureId;
     }
 
     public Long getUserId() {

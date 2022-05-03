@@ -2,11 +2,8 @@ package com.example.mountbook_backend.controller;
 
 import java.util.*;
 
-import com.example.mountbook_backend.entity.Reservation;
-import com.example.mountbook_backend.entity.Shelter;
-import com.example.mountbook_backend.payload.request.UserFilterRequest;
-import com.example.mountbook_backend.repository.ReservationRepository;
-import com.example.mountbook_backend.repository.ShelterRepository;
+import com.example.mountbook_backend.entity.Structure;
+import com.example.mountbook_backend.repository.StructureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,23 +12,23 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "", allowedHeaders = "")
 @RestController
 @RequestMapping("/api/v1/shelter")
-public class ShelterController {
+public class StructureController {
     //find & get MOVED TO FindController
     @Autowired
-    ShelterRepository shelterRepository;
+    StructureRepository structureRepository;
 
 //    @Autowired
 //    ReservationRepository reservationRepository;
 
     @GetMapping("/findAll")
     public ResponseEntity getAllShelters(){
-        List<Shelter> shelterList=shelterRepository.findAll();
-        return new ResponseEntity(shelterList, HttpStatus.OK);
+        List<Structure> structureList = structureRepository.findAll();
+        return new ResponseEntity(structureList, HttpStatus.OK);
     }
 
     @GetMapping("/findById")
     public ResponseEntity getShelterById(@RequestParam Long shId){
-        Optional<Shelter> shelter=shelterRepository.findById(shId);
+        Optional<Structure> shelter= structureRepository.findById(shId);
         return new ResponseEntity(shelter, HttpStatus.OK);
     }
 

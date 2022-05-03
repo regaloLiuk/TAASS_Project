@@ -1,10 +1,8 @@
 package com.example.mountbook_backend.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Reservation implements Serializable {
@@ -16,10 +14,7 @@ public class Reservation implements Serializable {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Shelter shelter;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Bivouac bivouac;
+    private Structure structure;
 
     @Column(nullable = false)
     private int guests;
@@ -32,17 +27,16 @@ public class Reservation implements Serializable {
 
     public Reservation() {}
 
-    public Reservation(User user, Shelter shelter, int guests, Date firstDay, Date lastDay) {
+    public Reservation(User user, Structure structure, int guests, Date firstDay, Date lastDay) {
         this.user = user;
-        this.shelter = shelter;
+        this.structure = structure;
         this.guests = guests;
         this.firstDay = firstDay;
         this.lastDay = lastDay;
     }
 
-    public Reservation(User user, Bivouac bivouac, int guests, Date firstDay, Date lastDay) {
+    public Reservation(User user,int guests, Date firstDay, Date lastDay) {
         this.user = user;
-        this.bivouac = bivouac;
         this.guests = guests;
         this.firstDay = firstDay;
         this.lastDay = lastDay;
@@ -60,20 +54,12 @@ public class Reservation implements Serializable {
         this.user = user;
     }
 
-    public Shelter getShelter() {
-        return shelter;
+    public Structure getShelter() {
+        return structure;
     }
 
-    public void setShelter(Shelter shelter) {
-        this.shelter = shelter;
-    }
-
-    public Bivouac getBivouac() {
-        return bivouac;
-    }
-
-    public void setBivouac(Bivouac bivouac) {
-        this.bivouac = bivouac;
+    public void setShelter(Structure structure) {
+        this.structure = structure;
     }
 
     public int getGuests() {

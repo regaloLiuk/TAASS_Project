@@ -18,9 +18,7 @@ import java.util.Optional;
 public class CommentController {
 
     @Autowired
-    ShelterRepository shelterRepository;
-    @Autowired
-    BivouacRepository bivouacRepository;
+    StructureRepository structureRepository;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -51,7 +49,7 @@ public class CommentController {
         boolean haveUserDoneJourney = false;
         //ITERATE ALL RESERVATION OF A USER
         for (ReservationResponse r : userReservation){
-            if (r.getShelterId() == commentRequest.getShelter())
+            if (r.getStructureId() == commentRequest.getStructure())
                 haveUserDoneJourney=true;
         }
         if(!haveUserDoneJourney)
@@ -59,21 +57,12 @@ public class CommentController {
 
         Comment comment = new Comment(user.get());
 
-        //verify that was selected only a shelter or a bivouac
-        if (commentRequest.getShelter()!=null && commentRequest.getBivouac()!=null)
-            return new ResponseEntity("chose one between shelter and bivouac", HttpStatus.BAD_REQUEST);
         //SHELTER
-        if (commentRequest.getShelter()!=null){
-            Optional<Shelter> shelter = shelterRepository.findById(commentRequest.getShelter());
-            if (shelter.isEmpty())
-                return new ResponseEntity("shelter not foud for id: " + commentRequest.getShelter(), HttpStatus.BAD_REQUEST);
-            comment.setShelter(shelter.get());
-        }
-        if (commentRequest.getShelter()!=null){
-            Optional<Bivouac> bivouac = bivouacRepository.findById(commentRequest.getBivouac());
-            if (bivouac.isEmpty())
-                return new ResponseEntity("you must specify a shelter or a bivouac", HttpStatus.BAD_REQUEST);
-            comment.setBivouac(bivouac.get());
+        if (commentRequest.getStructure()!=null){
+            Optional<Structure> structure = structureRepository.findById(commentRequest.getStructure());
+            if (structure.isEmpty())
+                return new ResponseEntity("structure not foud for id: " + commentRequest.getStructure(), HttpStatus.BAD_REQUEST);
+            comment.setShelter(structure.get());
         }
 
         if (commentRequest.isClear())

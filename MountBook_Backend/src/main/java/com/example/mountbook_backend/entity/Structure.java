@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Shelter implements Serializable {
+public class Structure implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -59,9 +59,11 @@ public class Shelter implements Serializable {
 
     private String image;   //link immagine, base64, da decidere
 
-    public Shelter() {}
+    private int type; //0 per rifugi, 1 per bivacchi
 
-    public Shelter(String name, String address, int maxNumBed, Long telephoneNumber) {
+    public Structure() {}
+
+    public Structure(String name, String address, int maxNumBed, Long telephoneNumber) {
         this.name = name;
         this.address = address;
         this.maxNumBed = maxNumBed;
@@ -141,4 +143,6 @@ public class Shelter implements Serializable {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public int getType() { return type; }
 }

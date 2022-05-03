@@ -132,13 +132,8 @@ public class UserController {
         //iterate the over the reservations and take the comment of shelter or bivouac
         for (ReservationResponse r : reservations){
             Optional <CommentResponse> c;
-            if (r.getBivouacId()!=null) {
-                c = commentRepository.findAllByUserAndBivouac(user.get().getId(), r.getBivouacId());
-                if (c.isPresent())
-                    r.setComments(c.get());
-            }
-            if (r.getShelterId()!=null){
-                c = commentRepository.findAllByUserAndShelter(user.get().getId(), r.getShelterId());
+            if (r.getStructureId()!=null){
+                c = commentRepository.findAllByUserAndStructure(user.get().getId(), r.getStructureId());
                 if (c.isPresent())
                     r.setComments(c.get());
             }
