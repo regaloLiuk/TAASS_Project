@@ -1,10 +1,6 @@
 # TAASS_Project
-repository for TAASS's project, objective: realize a Web-App for book camp and shelters
-## How to open with Intellij
-  - Select open form VCS
-  - From left menu choose GitHub
-  - Select TAASS_Project
-  - Click clone button
+repository for TAASS's project.
+Objective: realize a Web-App for the reservation of bivouac and shelters
 
 #Home Page
 https://review-taass.herokuapp.com/
