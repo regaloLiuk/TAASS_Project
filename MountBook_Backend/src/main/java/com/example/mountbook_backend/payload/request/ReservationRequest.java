@@ -12,8 +12,7 @@ public class ReservationRequest {
     @NotNull
     @NotEmpty
     private Long user;
-    private Long shelter;
-    private Long bivouac;
+    private Long structure;
     @NotNull
     @NotEmpty
     private int guests;
@@ -32,21 +31,13 @@ public class ReservationRequest {
         this.user = user;
     }
 
-    public Long getShelter() {
-        return shelter;
+    public Long getStructure() {
+        return structure;
     }
 
-    public Long getBivouac() {
-        return bivouac;
-    }
-
-    public void setBivouac(Long bivouac) {
-        this.bivouac = bivouac;
-    }
-
-    public void setShelter(Long shelter) {
-        this.shelter = shelter;
-    }
+    public void setStruvture(Long structure) {
+        this.structure = structure;
+    } 
 
     public int getGuests() {
         return guests;
