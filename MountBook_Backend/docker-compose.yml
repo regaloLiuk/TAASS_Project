@@ -10,7 +10,7 @@ services:
       - db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: MountBook
-      POSTGRES_USER: admin@admin.com
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
       restart: unless-stopped
 
