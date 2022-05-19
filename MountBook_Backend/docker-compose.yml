@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  dbpostgresql:
+    container_name: postgres
+    image: "postgres"
+    ports:
+      - "5050"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: MountBook
+      POSTGRES_USER: admin@admin.com
+      POSTGRES_PASSWORD: root
+      restart: unless-stopped
+
+  pgadmin:
+        container_name: pgadmin4_container
+        image: dpage/pgadmin4
+        restart: always
+        environment:
+          PGADMIN_DEFAULT_EMAIL: admin@admin.com
+          PGADMIN_DEFAULT_PASSWORD: root
+          PGADMIN_LISTEN_PORT: 5432
+        ports:
+          - "5050:5432"
+        volumes:
+          - pgadmin-data:/var/lib/pgadmin
+        links:
+          - "dbpostgresql:pgsql-server"
+        depends_on:
+          - dbpostgresql
+
+  app:
+    build: .
+    image: appbootrest
+    container_name: appbootrest
+    ports:
+      - "8081:8080"
+    depends_on:
+      - dbpostgresql
+#    environment:
+#     - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpostgresql:5432/testdb
+#     - SPRING_DATASOURCE_USERNAME=admin
+#     - SPRING_DATASOURCE_PASSWORD=admin
+#     - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+volumes:
+  db-data:
+  pgadmin-data:
+#volumes:
+#  db:
+#    driver: local
+
