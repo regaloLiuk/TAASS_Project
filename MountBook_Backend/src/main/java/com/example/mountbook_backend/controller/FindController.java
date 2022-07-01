@@ -22,10 +22,10 @@ public class FindController {
     @Autowired
     ReservationRepository reservationRepository;
 
-    @GetMapping("findAllStructure")
+    @GetMapping("/findAllStructure")
     public ResponseEntity findAllStructure(){
         List<Object> shelterList= Collections.singletonList(structureRepository.findAll());
-        return new ResponseEntity(shelterList.get(0), HttpStatus.OK);
+        return new ResponseEntity(shelterList, HttpStatus.OK);
     }
 
     @PostMapping("/findStructure")
