@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mountbook-app
+  labels:
+    app: mountbook-app
+    group: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mountbook-app
+  template:
+    metadata:
+      labels:
+        app: mountbook-app
+        group: backend
+    spec:
+      containers:
+        - image: lucamuraz/appbootrest:appbootrest
+          name: mountbook-app
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: dbpostgresql-config
+          env:
+            - name: DB_SERVER
+              value: dbpostgresql
