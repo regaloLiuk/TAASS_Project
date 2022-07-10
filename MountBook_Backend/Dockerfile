@@ -1,7 +1,6 @@
 FROM openjdk:13-alpine
 RUN addgroup -S spring && adduser -S spring -G spring
 VOLUME /tmp
-#EXPOSE 8080
 EXPOSE 8081
 ARG DEPENDENCY=target
 ADD ${DEPENDENCY}/*.jar appbootrest.jar

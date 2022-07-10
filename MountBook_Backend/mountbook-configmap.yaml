@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mountbook-configmap
+  namespace: default
+data:
+  spring.datasource.url: "jdbc:postgresql://postgres-service:5432/MountBook"
+  spring.datasource.driver: "org.postgresql.Driver"
+  spring.datasource.username: "admin"
+  spring.datasource.password: "admin"
+  spring.jpa.database-platform: "org.hibernate.dialect.PostgreSQLDialect"
+  spring.jpa.hibernate.ddl-auto: "update"
+  spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation: "true"

@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-pvc
+  labels:
+    app: postgres
+spec:
+#  volumeMode: FileSystem
+#  storageClassName: slow
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgresql-pv
+  labels:
+    type: local
+    app: postgres
+spec:
+  persistentVolumeReclaimPolicy: Recycle
+#  volumeMode: FileSystem
+#  storageClassName: slow
+    capacity:
+      storage: 100Mi
+    accessModes:
+      - ReadWriteMany
+  hostPath:
+    path: "/tmp"
