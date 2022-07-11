@@ -1,4 +1,4 @@
-let url = "http://localhost:8081";
+let url = "http://127.0.0.1:8081";
 
 let shelter = "/api/v1/find/";
 let comment = "/api/v1/comment/";
@@ -6,16 +6,21 @@ let reservation = "/api/v1/reservation/";
 
 $(document).ready(function(){
 
-    //Azioni da eseguire al caricamento della pagina
-    //find();
-
-    /*gapi.load('client:auth2', function() {
-        gapi.auth2.init();
-          
-    });*/
-
-
    
+    gapi.load('auth2', function() {
+        console.log("caricato")
+        gapi.auth2.init();
+     });
+      
+   
+    if(localStorage.getItem("mountBookId") == null || localStorage.getItem("mountBookId") == 0)
+        window.location.href = 'login.html';
+    else
+        app.username = localStorage.getItem("mountBookUsername");
+    
+    console.log(localStorage.getItem("mountBookUsername"))
+
+
     var start_tmp =  new Date();
     var end_tmp= new Date();
     end_tmp.setDate(start_tmp.getDate() + 1);
@@ -28,6 +33,9 @@ $(document).ready(function(){
     console.log(app.tmp_dump_periodo);
     console.log(app.tmp_periodo);
 });
+
+
+
 
 
 
@@ -80,20 +88,39 @@ $(function() {
 
 
 function reserve(){
-    /*$.post("url","json_body",
+
+
+    //--  Da recuperare valori veri
+    var tmp_json = JSON.stringify({
+        "user": "id",
+        "guests": "numero ospiti",
+        "firstDay": "Data",
+        "lastDay": "Data",
+        "structure": "id struttura",
+    
+    })
+
+    $.post("url","json_body",
     function(data, status){
        console.log(data);
     });
-    */
+    
 }
 
 function getStorico(){
 
 
-    $.get(url+"/api/v1/user/getUserHistory?userId=1",
+    /* Nome struttura
+       Data Inizio - Data Fine
+    */
+
+    $.get(url+"/api/v1/user/getUserHistory?userId="+localStorage.getItem("mountBookId"),
     function(data, status){
-       console.log(data);
-       app.jsn_storico_dummy = JSON.parse(data);
+       console.log(data.reservations);
+      // console.log(status);
+       app.jsn_storico_dummy = data.reservations;
+       console.log(app.jsn_storico_dummy[0].comments.clear);
+       
     });
 
    
@@ -244,6 +271,7 @@ var app = new Vue({
     el: '#app',
     
     data: {
+        username:"",
         seen_detail: false,
         seen_home:true,
         seen_book:false,
@@ -252,7 +280,7 @@ var app = new Vue({
         logged: false,
         img_src_detail:'',
         element:-1,
-        length: null,
+        length: 0,
         mappa_home:null,
         marker:marker = new Array(),
         imageUser: "'../img/usericon.png'",
@@ -275,7 +303,9 @@ var app = new Vue({
         actual_page:null,
 
         id_user:-1,
-        id_shelter:-1
+        id_shelter:-1,
+
+        costo: 0,
 
         },
     methods: {
@@ -288,7 +318,7 @@ var app = new Vue({
             app.seen_home=false; // Nasconde la porzione di pagina relativa alla home
             app.seen_book=false; // Nasconde la porzione di pagina relativa alla prenotazione
             
-            app.id_shelter=id;
+            app.id_shelter=app.jsn_list_dummy[parseInt(index)].id;
 
             app.img_src_detail=app.jsn_list_dummy[parseInt(index)].img; //Setta l'immagine da visualizzare nel dettaglio
 
@@ -308,6 +338,8 @@ var app = new Vue({
             app.seen_book=false; // Nasconde la porzione di pagina relativa alla scelta
             app.seen_home=true; // Rende visibile la porzione di pagina relativa alla home
             app.seen_story=false;
+
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
 
                 
                                         
@@ -329,6 +361,11 @@ var app = new Vue({
             console.log(app.n_notti);
             
             document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+
+            var tmpCosto = app.n_notti * app.jsn_list_dummy[app.element].price * app.dump_residenti
+
+            app.costo = Math.round((tmpCosto + Number.EPSILON) * 100) / 100;
 
 
         },
@@ -369,8 +406,8 @@ var app = new Vue({
             L.control.scale({imperial: true, metric: true}).addTo(map);
 
             var mark = L.marker({lon: lon, lat: lat});
-            marker.push(mark);
-            mark.addTo(map).bindPopup(name+"<br><a href=\""+website+"\">Vai al sito</a>").openPopup(); // Da aggiungere link al sito 
+            marker.push(mark);//--
+            mark.addTo(map).bindPopup(name+"<br><a href="+website+">Vai al sito</a>").openPopup(); // Da aggiungere link al sito 
             return map;
         },
 
@@ -450,16 +487,11 @@ var app = new Vue({
 
             console.log("Indice "+index);
             console.log("ser"+index)
-            var servizio;
             var pulizia;
             var ospitalita;
             var cucina;
             var location;
 
-            if(document.getElementsByName('ser'+index).item(0).checked)
-                servizio = true;
-            else if(document.getElementsByName('ser'+index).item(1).checked)
-                servizio = false;
 
             if(document.getElementsByName('pul'+index).item(0).checked)
                 pulizia = true;
@@ -481,39 +513,32 @@ var app = new Vue({
             else if(document.getElementsByName('loc'+index).item(1).checked)
                 location = false;
 
-            /* var servizio = document.getElementsByName('ser'+index).item(0).checked;
-           var pulizia = document.querySelector('input[name="pul"'+index+']:checked').value;
-            var ospitalita = document.querySelector('input[name="osp"'+index+']:checked').value;
-            var cucina = document.querySelector('input[name="cuc"'+index+']:checked').value;
-            var location = document.querySelector('input[name="loc"'+index+']:checked').value;*/
+          
 
             //-- RECUPERARE ID UTENTE E SHELTER
             var tmp_json =JSON.stringify({
-                "id":1,
-                "user":1,
-                "shelter":1,
-                "service":servizio,
+                "id":app.jsn_storico_dummy[index].reservationId,
+                "user":app.jsn_storico_dummy[index].userId,
+                "structure":app.jsn_storico_dummy[index].structureId,
                 "clear": pulizia,
                 "ospitality": ospitalita,
                 "food": cucina,
                 "location": location,
-                "bivouac": null
    
             })
 
-           
-            
-            /*$.post(url+comment+"doComment",tmp_json,
-                function(data, status){
-                    console.log(data);
-                    console.log(status)
-            });*/
-
-
-            $.post(url+comment+"doComment",tmp_json,
-                function(data, status){
+            $.ajax({
+                method: "POST",
+                url: url+comment+"doComment",
+                async:true,
+                data:tmp_json,
+                crossDomain: true,
+                contentType: "application/json",
+                success: function(result) {
                     getStorico();
-                });
+                        
+                }
+            });
 
 
             console.log(tmp_json)
@@ -522,15 +547,20 @@ var app = new Vue({
             console.log(tmp_json);
             console.log(url+comment+"doComment");
         },
-        // Funzioni per valutazione struttura ---------
-
 
         eliminaPrenotazione: function(index, id_user, id){
-            console.log("Eliminata prenotazione "+ index +" id utente: "+id_user+" id rifugio: "+id_shelter);
+            console.log("Eliminata prenotazione "+ index +" id utente: "+id_user+" id rifugio: "+id);
             
             var tmp_json = JSON.stringify({"userId":id_user,"reservationId":id})
 
-           /* $.ajax({
+            console.log(tmp_json);
+            
+            /*$.post(url+reservation+"deleteReservation",tmp_json,
+                function(data, status){
+                    console.log(data);
+                    getStorico();
+            });*/
+            $.ajax({
                 method: "POST",
                 url: url+reservation+"deleteReservation",
                 async:true,
@@ -538,22 +568,25 @@ var app = new Vue({
                 crossDomain: true,
                 contentType: "application/json",
                 success: function(result) {
-                    app.jsn_storico_dummy = JSON.parse(result);
+                    console.log(result);
                     getStorico();
                 }
-            });*/
-
-            $.get(url+reservation+"deleteReservation",tmp_json,
-                function(data, status){
-                    app.jsn_storico_dummy = JSON.parse(result);
-                    getStorico();
             });
 
            
         },
 
         confermaPrenotazione: function(index){
-            var tmp_json =JSON.stringify({"user":1,"shelter":1,"guests":3,"firstDay": app.dump_periodo.substr(0,10), "lastDay": app.dump_periodo.substr(11,)})
+
+            console.log("id "+app.id_shelter)
+
+            var tmp_json =JSON.stringify(
+                {"user":localStorage.getItem("mountBookId"),
+                "structure":app.id_shelter,
+                "guests":parseInt(app.dump_residenti),
+                "firstDay": app.dump_periodo.substr(0,10), 
+                "lastDay": app.dump_periodo.substr(11,)
+            })
 
             $.ajax({
                 method: "POST",
@@ -567,13 +600,27 @@ var app = new Vue({
                 }
             });
 
-            console.log(tmp_json);
+            console.log("---> "+tmp_json);
                 
         },
 
         getActualPage: function(){
             const url = new URL(window.location);
             console.log(url.hash);
+        },
+
+        signOut: function(){
+
+            // Logout google
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+              console.log('User signed out.');
+            });
+
+            localStorage.setItem("mountBookId",0);
+            localStorage.setItem("mountBookUsername","");
+
+            window.location.href = 'login.html'
         },
 
         createPdf: function(){
@@ -587,16 +634,17 @@ var app = new Vue({
             var residenti = app.dump_residenti;
             var costo = app.jsn_list_dummy[app.element].price*app.n_notti*residenti;
 
+           // var costo = Math.round((costo + Number.EPSILON) * 100) / 100;
+
             doc.setFontSize(18);
 
-            doc.text(20, 50, 'Codice prenotazione:  125432' );
-            doc.text(20, 60, 'Prenotazione a nome di: ' );
+            doc.text(20, 60, 'Prenotazione a nome di: ' + localStorage.getItem("mountBookUsername"));
             doc.text(20, 70, 'Struttura: ' + rifugio);
             doc.text(20, 80, 'Telefono: ' + tel);
             doc.text(20, 90, 'Location: ' + location);
             doc.text(20, 100, 'Periodo: ' + periodo);
             doc.text(20, 110, 'Residenti: ' + residenti);
-            doc.text(20, 140, '\t\t\t\t\tTotale: ' + costo + 'Euro');
+            doc.text(20, 140, '\t\t\t\t\tTotale: ' + app.costo + 'Euro');
 
             doc.line(20, 130, 160, 130); // horizontal line
 

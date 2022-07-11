@@ -45,28 +45,26 @@
                         <!-- Input username-->
                         <div class="input-group mb-3" >
                             <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
+                            <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            <input id="username" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
 
                         <!-- Input password-->
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-key-fill"></i></span>
+                            <span class="input-group-text" ><i class="bi bi-key-fill"></i></span>
                             </div>
-                            <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                            <input id="password" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
                         </div>
 
                         <!--bottoni login-->
                         <div style="padding:2%; ">
-                            <button type="button" class="btn btn-danger">Accedi</button><br>
-                            <button style="margin-top: 2px" type="button" class="btn btn-danger">Crea account</button>
+                            <button type="button" class="btn btn-danger" @click="login()">Accedi</button><br>
+                            <button style="margin-top: 2px" type="button" class="btn btn-danger" onclick="location.href = 'subscribe.html';">Crea account</button>
                             <!--Bottone login Google-->
                             <div >
                                 <div style="margin-left:57px; margin-top:25px ;" class="g-signin2" data-onsuccess="onSignIn" data-longtitle="true"></div>
-                                <!--Placeholder facebook login-->
-                                <button type="button" class="btn btn-primary" style="margin-top: 5px; ">Accedi con Facebook</button><br>
                             </div>
                         </div> 
                     </form>
@@ -87,14 +85,111 @@
             console.log('Name: ' + profile.getName());
             console.log('Image URL: ' + profile.getImageUrl());
             console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-            window.location.replace("home.php");
+
+
+            var username = profile.getName();
+            var email = profile.getEmail();
+                   
+                
+
+             var tmp_json =JSON.stringify({
+                "username":username,
+                 "email":email,
+                 "password":"passwordSegretissima",
+                 "role":["3"]
+             })
+
+            console.log(tmp_json);
+
+
+             $.ajax({
+                method: "POST",
+                url: app.registerUrl,
+                async:true,
+                crossDomain: true,
+                data:tmp_json,
+                contentType: "application/json",
+                     success: function(result) {
+                          console.log(result);
+                           var tmp_json =JSON.stringify({
+                                "username":username,
+                                "password":"passwordSegretissima",
+                            })
+
+
+                            console.log(tmp_json)
+
+
+                            $.ajax({
+                                method: "POST",
+                                url: app.loginUrl,
+                                async:true,
+                                crossDomain: true,
+                                data:tmp_json,
+                                contentType: "application/json",
+                                success: function(result) {
+                                    if(result.id != null){
+                                        console.log(result.id);
+                                        localStorage.setItem("mountBookId",result.id);
+                                        localStorage.setItem("mountBookUsername",result.username);
+                                        window.location.href = "home.html";
+                                    }
+                                    else
+                                        alert("Attenzione, credenziali errate");
+
+                                },error: function(result){
+                                    alert("Attenzione, credenziali errate");
+                                }
+                            });
+
+                           //--
+                        
+
+                     },
+                     error: function(result){
+                        var tmp_json =JSON.stringify({
+                                "username":username,
+                                "password":"passwordSegretissima",
+                            })
+
+
+                            console.log(tmp_json)
+
+
+                            $.ajax({
+                                method: "POST",
+                                url: app.loginUrl,
+                                async:true,
+                                crossDomain: true,
+                                data:tmp_json,
+                                contentType: "application/json",
+                                success: function(result) {
+                                    if(result.id != null){
+                                        console.log(result.id);
+                                        localStorage.setItem("mountBookId",result.id);
+                                        localStorage.setItem("mountBookUsername",result.username);
+                                        window.location.href = "home.html";
+                                    }
+                                    else
+                                        alert("Attenzione, credenziali errate");
+
+                                },error: function(result){
+                                    alert("Attenzione, credenziali errate");
+                                }
+                            });
+
+                        
+                    }
+            });
+
+
 
          }
         
         function up(){
             $.ajax({
                 method: "GET",
-                url: "http:///localhost:8082/api/v1/customer/customers",
+                url: "http:///127.0.0.1:8082/api/v1/customer/customers",
                 async:true,
                 crossDomain: true,
                 contentType: "text/plain",
@@ -111,9 +206,55 @@
             el: '#app',
 
             data: {
-                message: 'Ciao Mondo!',
+                loginUrl: 'http://127.0.0.1:8081/api/auth/signin',
+                registerUrl: 'http://127.0.0.1:8081/api/auth/signup',
                 jsn_customers:null,
+                },
+            methods:{
+                
+                login: function(){
+
+                    var username = document.getElementById("username").value;
+                    var password = document.getElementById("password").value;
+                    
+
+                    var tmp_json =JSON.stringify({
+                        "username":username,
+                        "password":password,
+                    })
+
+
+                    console.log(tmp_json)
+
+
+                    $.ajax({
+                        method: "POST",
+                        url: app.loginUrl,
+                        async:true,
+                        crossDomain: true,
+                        data:tmp_json,
+                        contentType: "application/json",
+                        success: function(result) {
+                            if(result.id != null){
+                                console.log(result.id);
+                                localStorage.setItem("mountBookId",result.id);
+                                localStorage.setItem("mountBookUsername",result.username);
+                                window.location.href = "home.html";
+                            }
+                            else
+                                alert("Attenzione, credenziali errate");
+
+                        },error: function(result){
+                            alert("Attenzione, credenziali errate");
+                        }
+                    });
+
+                    
+
+
+
                 }
+            }
         })
 
 

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@CrossOrigin(origins = "", allowedHeaders = "")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
@@ -101,7 +101,7 @@ public class UserController {
 
     //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     @PostMapping("/changePassword")
-    public ResponseEntity changePassword(@RequestParam String username, @RequestParam String oldPassword, @RequestParam String newPassword) {
+    public ResponseEntity getUserHistory(@RequestParam String username, @RequestParam String oldPassword, @RequestParam String newPassword) {
 
         Optional<User> user = userRepository.findByUsername(username);
         if (!user.isPresent())
@@ -122,7 +122,7 @@ public class UserController {
     }
 
     @GetMapping("/getUserHistory")
-    public ResponseEntity changePassword(@RequestParam Long userId) {
+    public ResponseEntity getUserHistory(@RequestParam Long userId) {
         Optional<UserMinimalResponse> user = userRepository.findUserById(userId);
         if (!user.isPresent())
             return new ResponseEntity("no user found for id: " + userId, HttpStatus.NOT_FOUND);

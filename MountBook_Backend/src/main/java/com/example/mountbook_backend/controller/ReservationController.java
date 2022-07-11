@@ -18,7 +18,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "", allowedHeaders = "")
 @RestController
 @RequestMapping("/api/v1/reservation")
 public class ReservationController implements Serializable {

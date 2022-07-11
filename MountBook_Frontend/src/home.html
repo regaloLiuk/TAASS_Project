@@ -57,23 +57,25 @@
             <nav class="navbar navbar-dark navbar-custom" >
                 <a class="navbar-brand" href="#Home" @click="toHome()">
                 <img src="../img/logo.png" width="90" height="60" class="d-inline-block align-top" alt="MountBook"></a>
-                
+               
                 <!-- Default dropstart button -->
-                 <div class="btn-group dropstart">
+                 <div class="btn-group dropstart" style=" display: block;">
                     <button type="button" style="width:60px; height:60px; border: none; background-color: #66ff66;" :style="{ 'background-image': 'url(' + imageUser + ')' }" data-bs-toggle="dropdown">
                     </button>
+                   <p><strong>{{username}}</strong></p>
                         <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#Storico" @click="toStorico()">Le mie prenotazioni</a></li>
                         <li><a class="dropdown-item" href="#Opzioni">Opzioni</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#Login" onclick="signOut()">Logout</a></li>
+                        <li><a class="dropdown-item" @click="signOut()">Logout</a></li>
                     </ul>
+                    
                 </div>
 
 
             </nav>
             <div style="background-color: #66ff66; height: 20% ; position: absolute; top: 5;  left: 0; width: 100%; z-index: -1"></div>
-            <div style="background-color: #66ff66; height: 20% ; position: absolute; top:5;  left: 0; width: 100%;"></div>
+            <div style="background-color: #66ff66; height: 20% ; position: absolute; top: 5;  left: 0; width: 100%; z-index: -1;"></div>
             
             <div id="home-div" v-show="seen_home" > <!--Div contenuto home della pagina-->
                 <!--Carousel home page-->
@@ -126,7 +128,7 @@
 
 
                             <!--Periodo arrivo-partenza-->
-                            <div class="input-group mb-3" style="float: left;width: 49%; margin-top: 5px;" id="periodo">
+                            <div class="input-group mb-3" style="float: left;width: 49%; margin-top: 5px;">
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="periodo"><i class="bi bi-table"></i>&nbsp;Periodo</label>
                                 </div>
@@ -138,7 +140,7 @@
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="residenti"><i class="bi bi-people-fill"></i>&nbsp;Ospiti</label>
                                 </div>
-                                <input  id="residenti" min="1" class="form-control" aria-label="Sizing example input"  value="1" type="number" aria-describedby="inputGroup-sizing-sm">
+                                <input id="residenti" min="1" class="form-control" aria-label="Sizing example input"  value="1" type="number" aria-describedby="inputGroup-sizing-sm">
                             </div>
 
                             <!-- Costo -->
@@ -192,7 +194,7 @@
                         <div id="map_home" ></div>
                     </div>
                     <br>
-                    <h3 v-if="length" style="margin-left: 2%;"><strong><U>Risultati: {{length}}</U></strong></h3>
+                    <h3 style="margin-left: 2%;"><strong><U>Risultati: {{length}}</U></strong></h3>
 
                     <!--Div lista rifugi-->
                     <div id="div_lista_rifugi" >
@@ -203,7 +205,7 @@
                                     <div class="card">
                                         <div class="card-horizontal" style="  display: flex; flex: 1 1 auto; ">
                                             <div class="img-square-wrapper">
-                                                 <a href='#Dettaglio' ><img class="card-img-top" :src='jsn_list_dummy[i].image'  style="width: 250px; height: 180px; " @click="toDetail(i,jsn_list_dummy[i].id)"></a>
+                                                 <a href='#Dettaglio' ><img class="card-img-top" :src='jsn_list_dummy[i].image'  style="width: 250px; height: 180px; z-index: 1; " @click="toDetail(i,jsn_list_dummy[i].id)"></a>
                                             </div>
                                             <div class="card-body" >
                                                 <a :href='jsn_list_dummy[i].webSite' ><h5 class="card-title" >{{jsn_list_dummy[i].name}}</h5></a>
@@ -261,7 +263,7 @@
                 <a href="#Riepilogo"><button type="button" class="btn btn-danger" style="margin:auto;" @click="toBook(app.element)"><i class="bi bi-vector-pen"></i>&nbsp;Prenota</button><br><br></a>
                 <a href="#Riepilogo"><button v-if="jsn_list_dummy[app.element].type==1" type="button" class="btn btn-danger" style="margin:auto;" @click="toBook()"><i class="bi bi-vector-pen"></i>&nbsp;Segna la tua presenza</button><br><br></a>
 
-                <a href="#Home"><button @click="toHome()" class="myBtn" style="display:block;" id="myBtn" ><i class="bi bi-arrow-left-circle"></i></button></a>
+                <a href="#Home"><button @click="toHome()" class="myBtn" style="display:block;"  ><i class="bi bi-arrow-left-circle"></i></button></a>
                 
             </div>
 
@@ -296,7 +298,7 @@
 
                         </ul>
                         <br>
-                        <h2 ><U>Totale:</U>&nbsp; {{app.n_notti * app.jsn_list_dummy[app.element].price * app.dump_residenti}} <i class="bi bi-currency-euro"></i></h2> <!--DA AGGIUNGERE SOVRAPPREZZO DATO DAL TIPO DI SOGGIORNO E PREZZO-->
+                        <h2 ><U>Totale:</U>&nbsp; {{app.costo}} <i class="bi bi-currency-euro"></i></h2> <!--DA AGGIUNGERE SOVRAPPREZZO DATO DAL TIPO DI SOGGIORNO E PREZZO-->
                         <!--<h2 v-if="jsn_list_dummy[app.element].type==0"><U>Totale:</U>&nbsp; {{app.n_notti*app.jsn_list_dummy[app.element].prezzo}} <i class="bi bi-currency-euro"></i></h2> DA AGGIUNGERE SOVRAPPREZZO DATO DAL TIPO DI SOGGIORNO-->
 
                     </div>
@@ -304,7 +306,7 @@
                     <button type="button" class="btn btn-danger" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalConferma" @click="confermaPrenotazione()"><i class="bi bi-building"></i>&nbsp;Conferma</button>
 
 
-                    <button @click="toDetail(element)" class="myBtn" style="display:block;" id="myBtn"  ><i class="bi bi-arrow-left-circle"></i></button>
+                    <button @click="toDetail(element)" class="myBtn" style="display:block;"  ><i class="bi bi-arrow-left-circle"></i></button>
                </div>
             </div>
 
@@ -322,7 +324,6 @@
                                 <th>Riepilogo</th>
                                 <th>Elimina</th>
                                 <th>Vota</th>
-                                <th>Servizio</th>
                                 <th>Pulizia</th>
                                 <th>Ospitalita'</th>
                                 <th>Cucina</th>
@@ -331,49 +332,36 @@
                         <thead>
                         <tbody v-for="(index, i) in jsn_storico_dummy">
                             <tr >
-                                <!--<td><img :src='jsn_storico_dummy[i].img' style="width: 150px; height: 100px;"></td>
-                                <td v-if="jsn_storico_dummy[i].type==0" >Rifugio</td>
-                                <td v-if="jsn_storico_dummy[i].type==1" >Bivacco</td>-->
-                                <!--<td>{{jsn_storico_dummy[i].nome}}</td>-->
-                                <td  v-if="jsn_storico_dummy[i].type==0" style="text-align: left;" ><strong><U>Luogo:</U></strong> {{jsn_storico_dummy[i].nome}}<br><strong><U>Tipo:</U></strong> Rifugio<strong></strong><strong><br><U>Posti:</U></strong> {{jsn_storico_dummy[i].posti}}<br> <div v-if="jsn_storico_dummy[i].type==0"><strong><U>Totale:</U></strong> {{jsn_storico_dummy[i].totale}}<i class="bi bi-currency-euro"></i><br> <strong><U>Soggiorno:</U></strong> {{jsn_storico_dummy[i].soggiorno}} <br></div><strong><U>Periodo:</U></strong> {{jsn_storico_dummy[i].periodo}}</td>
+                                <td style="text-align: left;" ><strong><U>Nome:</U></strong> {{jsn_storico_dummy[i].name}}<br><strong><U>Periodo:</U></strong> {{jsn_storico_dummy[i].firstDay.substring(0, 10)}} - {{jsn_storico_dummy[i].lastDay.substring(0, 10)}}<br><strong><U>Ospiti:</U></strong> {{jsn_storico_dummy[i].guest}}</td>
                                
-                                <td  v-if="jsn_storico_dummy[i].type==1"  style="text-align: left;" ><strong><U>Luogo:</U></strong> {{jsn_storico_dummy[i].nome}}<br><strong><U>Tipo:</U></strong> Bivacco<strong><br><U>Posti:</U></strong> {{jsn_storico_dummy[i].posti}}<br> <div v-if="jsn_storico_dummy[i].type==0"><strong><U>Totale:</U></strong> {{jsn_storico_dummy[i].totale}}<i class="bi bi-currency-euro"></i><br> <strong><U>Soggiorno:</U></strong> {{jsn_storico_dummy[i].soggiorno}} <br></div><strong><U>Periodo:</U></strong> {{jsn_storico_dummy[i].periodo}}</td>
-                                
                                 <!--Elimina prenotazione-->
-                                <td v-if="jsn_storico_dummy[i].voted==0"> <button type="button" class="btn btn-warning" @click="eliminaPrenotazione(i,jsn_storico_dummy[i].userId,jsn_storico_dummy[i].reservationId)"><i class="bi bi-calendar-x-fill"></i>Cancella</button></td>
+                                <td v-if="jsn_storico_dummy[i].comments==null"> <button type="button" class="btn btn-warning" @click="eliminaPrenotazione(i,jsn_storico_dummy[i].userId,jsn_storico_dummy[i].reservationId)"><i class="bi bi-calendar-x-fill"></i>Cancella</button></td>
 
                                 <!--Struttura da votare categorie AGGIORNARE LE FUNZIONI PER LE CATEGORIE SPECIFICHE-->
-                                <td v-if="jsn_storico_dummy[i].voted==0"> <button type="button" class="btn btn-success" @click="vota(i)" ><i class="bi bi-star"></i>Vota</button></td>
+                                <td v-if="jsn_storico_dummy[i].comments==null"> <button type="button" class="btn btn-success" @click="vota(i)" ><i class="bi bi-star"></i>Vota</button></td>
 
-                                <td v-if="jsn_storico_dummy[i].voted==0"> 
-                                    <input type="radio" class="btn-check" :name="'ser'+i" :id="'serUp'+i"  value="1" autocomplete="off" checked>
-                                    <label class="btn btn-outline-success" :for="'serUp'+i" style="margin-top:2px;"><i class="bi bi-emoji-smile-fill"></i></label >
-                                    
-                                    <input type="radio" class="btn-check" :name="'ser'+i" :id="'serDwn'+i"   value="2" autocomplete="off" >
-                                     <label class="btn btn-outline-danger" :for="'serDwn'+i" style="margin-top:2px;"><i class="bi bi-emoji-frown-fill"></i></label ></td>
-                                
-                                <td v-if="jsn_storico_dummy[i].voted==0"> 
+                                <td v-if="jsn_storico_dummy[i].comments==null"> 
                                     <input type="radio" class="btn-check" :name="'pul'+i" :id="'pulUp'+i" value="1" autocomplete="off" checked> 
                                     <label class="btn btn-outline-success" :for="'pulUp'+i" style="margin-top:2px;"><i class="bi bi-emoji-smile-fill"></i></label >
                                     
                                     <input type="radio" class="btn-check" :name="'pul'+i" :id="'pulDwn'+i" value="2" autocomplete="off">
                                      <label class="btn btn-outline-danger" :for="'pulDwn'+i" style="margin-top:2px;"><i class="bi bi-emoji-frown-fill"></i></label ></td>
                                         
-                                <td v-if="jsn_storico_dummy[i].voted==0"> 
+                                <td v-if="jsn_storico_dummy[i].comments==null"> 
                                     <input type="radio" class="btn-check" :name="'osp'+i" :id="'ospUp'+i" value="1" autocomplete="off" checked>
                                     <label class="btn btn-outline-success" :for="'ospUp'+i" style="margin-top:2px;"><i class="bi bi-emoji-smile-fill"></i></label >
                                     
                                     <input type="radio" class="btn-check" :name="'osp'+i" :id="'ospDwn'+i" value="2" autocomplete="off">
                                      <label class="btn btn-outline-danger" :for="'ospDwn'+i" style="margin-top:2px;"><i class="bi bi-emoji-frown-fill"></i></label ></td>
                                 
-                                <td v-if="jsn_storico_dummy[i].voted==0"> 
+                                <td v-if="jsn_storico_dummy[i].comments==null"> 
                                     <input type="radio" class="btn-check" :name="'cuc'+i" :id="'cucUp'+i" value="1" autocomplete="off" checked>
                                     <label class="btn btn-outline-success" :for="'cucUp'+i" style="margin-top:2px;"><i class="bi bi-emoji-smile-fill"></i></label >
                                     
                                     <input type="radio" class="btn-check" :name="'cuc'+i" :id="'cucDwn'+i" value="2" autocomplete="off">
                                      <label class="btn btn-outline-danger" :for="'cucDwn'+i" style="margin-top:2px;"><i class="bi bi-emoji-frown-fill"></i></label ></td>
                                 
-                                <td v-if="jsn_storico_dummy[i].voted==0">
+                                <td v-if="jsn_storico_dummy[i].comments==null">
                                     <input type="radio" class="btn-check" :name="'loc'+i" :id="'locUp'+i" value="1" autocomplete="off" checked>
                                     <label class="btn btn-outline-success" :for="'locUp'+i" style="margin-top:2px;"><i class="bi bi-emoji-smile-fill"></i></label >
                                     
@@ -383,24 +371,20 @@
 
 
                                 <!--Struttura gia votata categorie-->
-                                <td v-if="jsn_storico_dummy[i].voted!=0"></td>
-                                <td v-if="jsn_storico_dummy[i].voted!=0"></td>
+                                <td v-if="jsn_storico_dummy[i].comments!=null"></td>
+                                <td v-if="jsn_storico_dummy[i].comments!=null"></td>
 
-                                <td v-if="jsn_storico_dummy[i].voted!=0 && jsn_storico_dummy[i].vote==-1">Votato &nbsp;<i class="bi bi-emoji-frown-fill"></i></td>
-                                <td v-if="jsn_storico_dummy[i].voted!=0 && jsn_storico_dummy[i].vote==1">Votato &nbsp;<i class="bi bi-emoji-smile-fill"></i></td>
-
-                                <td v-if="jsn_storico_dummy[i].voted!=0 && jsn_storico_dummy[i].vote==-1">Votato &nbsp;<i class="bi bi-emoji-frown-fill"></i></td>
-                                <td v-if="jsn_storico_dummy[i].voted!=0 && jsn_storico_dummy[i].vote==1">Votato &nbsp;<i class="bi bi-emoji-smile-fill"></i></td>
+                                <td v-if="jsn_storico_dummy[i].comments!=null && jsn_storico_dummy[i].comments.clear==false">Votato &nbsp;<i class="bi bi-emoji-frown-fill"></i></td>
+                                <td v-if="jsn_storico_dummy[i].comments!=null && jsn_storico_dummy[i].comments.clear==true">Votato &nbsp;<i class="bi bi-emoji-smile-fill"></i></td>
                                 
+                                <td v-if="jsn_storico_dummy[i].comments!=null && jsn_storico_dummy[i].comments.ospitality==false">Votato &nbsp;<i class="bi bi-emoji-frown-fill"></i></td>
+                                <td v-if="jsn_storico_dummy[i].comments!=null && jsn_storico_dummy[i].comments.ospitality==true">Votato &nbsp;<i class="bi bi-emoji-smile-fill"></i></td>
 
-                                <td v-if="jsn_storico_dummy[i].voted!=0 && jsn_storico_dummy[i].vote==-1">Votato &nbsp;<i class="bi bi-emoji-frown-fill"></i></td>
-                                <td v-if="jsn_storico_dummy[i].voted!=0 && jsn_storico_dummy[i].vote==1">Votato &nbsp;<i class="bi bi-emoji-smile-fill"></i></td>
+                                <td v-if="jsn_storico_dummy[i].comments!=null && jsn_storico_dummy[i].comments.food==false">Votato &nbsp;<i class="bi bi-emoji-frown-fill"></i></td>
+                                <td v-if="jsn_storico_dummy[i].comments!=null && jsn_storico_dummy[i].comments.food==true">Votato &nbsp;<i class="bi bi-emoji-smile-fill"></i></td>
 
-                                <td v-if="jsn_storico_dummy[i].voted!=0 && jsn_storico_dummy[i].vote==-1">Votato &nbsp;<i class="bi bi-emoji-frown-fill"></i></td>
-                                <td v-if="jsn_storico_dummy[i].voted!=0 && jsn_storico_dummy[i].vote==1">Votato &nbsp;<i class="bi bi-emoji-smile-fill"></i></td>
-
-                                <td v-if="jsn_storico_dummy[i].voted!=0 && jsn_storico_dummy[i].vote==-1">Votato &nbsp;<i class="bi bi-emoji-frown-fill"></i></td>
-                                <td v-if="jsn_storico_dummy[i].voted!=0 && jsn_storico_dummy[i].vote==1">Votato &nbsp;<i class="bi bi-emoji-smile-fill"></i></td>
+                                <td v-if="jsn_storico_dummy[i].comments!=null && jsn_storico_dummy[i].comments.location==false">Votato &nbsp;<i class="bi bi-emoji-frown-fill"></i></td>
+                                <td v-if="jsn_storico_dummy[i].comments!=null && jsn_storico_dummy[i].comments.location==true">Votato &nbsp;<i class="bi bi-emoji-smile-fill"></i></td>
                                 
                             </tr>
                         </tbody>
@@ -457,7 +441,6 @@
                     <section class="">
                     <div class="container text-center text-md-start mt-5">
                         <!-- Grid row -->
-                        <div class="row mt-3">
                         <!-- Grid column -->
                         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                             <!-- Content -->
@@ -531,7 +514,7 @@
                 <div class="modal fade" id="modalConferma" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header" style="background-color: #66ff66;">
+                            <div class="modal-header" style="background-color: #66ff66; ">
                                 <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-check"></i>&nbsp;Prenotazione avvenuta con successo!</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
@@ -558,17 +541,6 @@
     
     <script>
 
-   
-
-     // Metodo di test
-        function signOut() {
-            
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-            console.log('User signed out.');
-            window.location.replace("index.php");
-            });
-        }
 
          
     </script>
